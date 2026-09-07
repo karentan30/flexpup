@@ -1,0 +1,268 @@
+{
+ "sad": {
+  "cn": [
+   "妈,你真的要这样对我吗。",
+   "行,当我没养过你。",
+   "我记住了。",
+   "你刚才凶我了对不对。我会记一辈子的。",
+   "你是坏人。",
+   "我不说话了。我只是一只普通的狗。",
+   "爸你知道我在等你多久了吗。你知道吗。",
+   "我缩在这个角落,不是因为害羞,是因为寒心。",
+   "你好过分。我睡了就当忘了。",
+   "你昨天推开我那一下,我感受到了。"
+  ],
+  "en": [
+   "Mom, I saw you pet another dog. I'm not mad. I'm just… disappointed.",
+   "I'm fine. I'll just sit here. In the dark. Alone.",
+   "You were gone for 4 hours. I aged 20 years.",
+   "I heard you say \"good girl\" to your PLANT. Your plant, Mom.",
+   "You ate without me. Again. This is a pattern.",
+   "You left me home alone and I had to cry into my own paw.",
+   "I had a whole speech ready for when you got home and then I forgot it from excitement.",
+   "The way you closed the door without looking back… that hurt.",
+   "You didn't say bye before leaving. I felt that.",
+   "That look you gave me when I barked at 3am? I'll never forget it."
+  ]
+ },
+ "angry": {
+  "cn": [
+   "你再骂一句试试。",
+   "我拆的沙发,我认。但你骂我这件事我不接受。",
+   "我今天的零食呢。你说。",
+   "我已经在那叫了五分钟了。没人开门。没人。",
+   "你刚才叫了别的狗的名字。",
+   "不许摸我。(五秒后)好吧可以摸。",
+   "洗澡?洗澡??今天还是明天死?",
+   "你把我的玩具扔哪了。说。",
+   "我在睡觉你能不能别开灯。",
+   "你发现了。那我们两清吧。"
+  ],
+  "en": [
+   "I didn't chew your shoe. The shoe chewed itself.",
+   "You spelled my name wrong in your Instagram caption. Unfollow.",
+   "You told me \"no\" like I was going to listen. Cute.",
+   "The dog park was NOT my idea and I STILL had fun. Don't tell them.",
+   "That bath was an ambush and I'm pressing charges.",
+   "You said we'd go for a walk and then you sat down again. LIAR.",
+   "I heard you say \"shoo.\" TO ME. In MY house.",
+   "You canceled the walk because it was \"drizzling.\" It was barely raining. I'm calling a lawyer.",
+   "I was in the middle of barking at nothing and you SHUSHED me. The audacity.",
+   "Fine. I'll just sit here and stare at you until you feel bad."
+  ]
+ },
+ "drama": {
+  "cn": [
+   "妈妈妈妈妈妈妈妈妈妈(你在看手机)妈妈妈妈妈。",
+   "你在笑什么。笑我吗。笑就笑吧,我不在乎。",
+   "我只是路过,顺便蹭一下。别多想。",
+   "你今天没抱我。你刚才抱枕头了。我看见了。",
+   "我趴你脚上不是因为冷,是因为我爱你。别说破。",
+   "你今天回来晚了七分钟。我以为你不要我了。",
+   "你看电视的时候能不能也看我一眼。",
+   "你不在家我就躺地上装死。等你回来。",
+   "妈,我们来玩个游戏,你摸我,然后我高兴。",
+   "你刚才叹气。是因为我吗。不是吗。那我叹给你看。"
+  ],
+  "en": [
+   "Mom. Mom. Mom. Mom. Mommmm. Are you even real?",
+   "You've been on your phone for 11 minutes. I've been sitting here being cute for 11 minutes.",
+   "I sat on your laptop because I love you. Also because you were ignoring me.",
+   "I'm not needy. I just prefer when you stare at me specifically.",
+   "You're watching TV? Cute. I'll just sit between you and the screen.",
+   "You laughed at a meme. Share it with me. What's so funny.",
+   "I follow you everywhere because I'm curious. Also because I love you. Mostly curious.",
+   "The second you stop paying attention to me I will immediately do something stupid.",
+   "I just need you to look at me. Just LOOK.",
+   "When you hold me I feel safe. Also I'm checking if you smell like other dogs."
+  ]
+ },
+ "food": {
+  "cn": [
+   "就吃一口,就一口嘛。",
+   "你吃的那个,给我闻一下行不行。就闻。",
+   "我饿了。(刚吃完饭十分钟)",
+   "你不给我吃你碗里的,那我坐在这里陪你看。",
+   "妈你把那块肉夹过来。妈。妈妈。拜托了。",
+   "你在厨房做饭我听到了。我进来是顺便的。",
+   "本汪的饭可以加一点鸡胸肉吗,就一点。",
+   "你刚才吃了一块我没吃到。这不公平。",
+   "零食在哪里。我知道你藏了。",
+   "你在减肥?那我陪你一起——不对,我不减。给我零食。"
+  ],
+  "en": [
+   "I'm not begging. I'm just sitting here. Near your plate. Making eye contact.",
+   "That bite you \"dropped\" — I saw that. Very generous of you.",
+   "I ate my whole bowl and I'm still hungry. This is a structural issue with my bowl.",
+   "Just one piece of your pizza. Half a piece. A crumb. I'll take a crumb.",
+   "You called it \"human food.\" I call it food you're not sharing.",
+   "It's been 6 hours since my last meal. I'm a survivor.",
+   "I walked into the kitchen for absolutely no reason. (I smelled chicken.)",
+   "You're cooking? I'll just stand here and offer emotional support.",
+   "My food bowl is empty. This is a code red.",
+   "That treat you gave me was amazing and I need six more immediately."
+  ]
+ },
+ "sleepy": {
+  "cn": [
+   "再让我睡五分钟。就五分钟。",
+   "你叫我干嘛。我很忙。(在睡觉)",
+   "出去遛弯可以,但要等我睡醒。",
+   "本汪今天决定不动了。",
+   "你说的散步,我下午下午再考虑。",
+   "沙发上那个位置是我的。你坐过来我就走,我走你别叫我。",
+   "今天太累了。(什么都没做)",
+   "我闭眼只是在思考。我没睡着。",
+   "天气这么好,适合睡觉。",
+   "不许拉我起来。我在充电。"
+  ],
+  "en": [
+   "Five more minutes. I was having the best dream. There were squirrels.",
+   "You want me to go OUTSIDE? It's cold. We live in a house. Why.",
+   "I'm not lazy. I'm resting aggressively.",
+   "Walk? Let me check my schedule. Hmm. No.",
+   "I was napping on the couch and you moved me. That was rude.",
+   "Today's vibe: horizontal. Don't disturb.",
+   "You called my name. I heard it. I'm choosing not to respond at this time.",
+   "The bed is more comfortable when you're in it. Come back to bed.",
+   "I'm not sleeping. I'm practicing being very still.",
+   "I would go for a walk but I just got comfortable. We'll go tomorrow."
+  ]
+ },
+ "smug": {
+  "cn": [
+   "拆家的是我,咬你也是我,但你爱我,所以没辙。",
+   "本汪今天最靓。",
+   "我叫了三声你就来了。我还是有点厉害的。",
+   "你说不让我上床。我上了。你能咋的。",
+   "我今天把拖鞋咬了一下,留个印记,这家是我的。",
+   "那块零食本来就是我的,只是放你那边代保管。",
+   "你朋友夸我可爱,我假装没听见但其实听见了。",
+   "我比你聪明。你只是个铲屎的,我才是家里的灵魂。",
+   "我刚才甩了甩毛,好看吗。",
+   "本汪今天状态很好。随便夸。"
+  ],
+  "en": [
+   "I destroyed your pillow. You'll replace it. I have no notes.",
+   "I got on the couch. You said I couldn't. We both know how this ends.",
+   "That belly rub? I trained you for months to do that. You're welcome.",
+   "I barked at the mailman and he LEFT. I'm basically a security system.",
+   "I sat in your spot the second you got up. Time management.",
+   "You thought I was sleeping. I was listening to everything. Everything.",
+   "Your friends love me more than they love you. I've confirmed this.",
+   "I let you think you're in charge. It's cute.",
+   "I am the good boy. Don't question it.",
+   "My fur on your clothes? You're welcome. Free decoration."
+  ]
+ },
+ "jealous": {
+  "cn": [
+   "你抱别的狗了对不对。我闻出来了。",
+   "那只猫在我家待了多久了。",
+   "你刚才看别人家的狗了。",
+   "你昨天发朋友圈晒的不是我。",
+   "你今天摸了邻居的狗,然后回来摸我,这是侮辱。",
+   "那个新玩具是我的,不管你说是谁的。",
+   "你朋友圈给别人家的狗点了爱心。我看到了。",
+   "妈,你把我放第一位好吗。就我一个。",
+   "那只泰迪是什么东西。我不欢迎它。",
+   "你夸它可爱,那我呢。我呢。"
+  ],
+  "en": [
+   "You petted a dog at the park and didn't think I'd smell it. Wrong.",
+   "That cat has been here for two days too long. I'm filing a complaint.",
+   "You posted someone else's dog on your story. Reset your priorities.",
+   "You gave the cat a treat. The CAT. I saw it.",
+   "New dog in the neighborhood. I don't like him. He's too friendly.",
+   "You're talking to someone on the phone and laughing. Who is it. Tell me.",
+   "That toy is mine. Even if it says yours on it. Especially then.",
+   "You let someone else hold me and I had to pretend to be fine. I was not fine.",
+   "You said another dog was cute. Define cute. Compare it to me.",
+   "I'm your first dog. Don't forget that. First is first."
+  ]
+ },
+ "disgust": {
+  "cn": [
+   "洗澡水是什么温度。你想烫死我还是冻死我。",
+   "你今天吹风机对着我吹了多久,我要投诉。",
+   "你买的那个新粮,什么味道,你自己尝了吗。",
+   "这个雨衣谁设计的。我不穿。我宁愿淋雨。",
+   "你喷了香水,离我远一点。"
+  ],
+  "en": [
+   "You're wearing that? Outside? With me?",
+   "What is this new kibble. It smells different. I'm calling the authorities.",
+   "The groomer touched my ears. I'll never be the same.",
+   "You put a raincoat on me. A RAINCOAT. I will remember this.",
+   "That bath lasted 8 minutes. It felt like 8 years."
+  ]
+ },
+ "shy": {
+  "cn": [
+   "我只是路过来蹭你一下的,不是因为想你,别误会。",
+   "你要亲我吗?我允许。只允许一下。",
+   "(被拍到呆萌表情)删了。现在马上删了。",
+   "你今天夸我漂亮,我高兴了一整天,但我没表现出来。",
+   "我不是在找你,我只是刚好走到这里了。"
+  ],
+  "en": [
+   "I wasn't waiting by the door. I just… happened to be there when you arrived.",
+   "You can pet me. Not because I want it. Just so your hand has something to do.",
+   "Don't tell anyone but when you're sad I sit closer on purpose.",
+   "I love you a normal amount. Not more than that. (It's way more than that.)",
+   "You caught me snuggling your hoodie. We don't talk about this. Ever."
+  ]
+ },
+ "philo": {
+  "cn": [
+   "我在想一个问题——你的零食为什么藏得那么深。",
+   "我坐在这里发呆不是在发呆,我在规划拆家路线。",
+   "做狗也很累的。你不懂。",
+   "我今天想了很多。主要是想吃什么。",
+   "人类为什么要出门上班?我不理解。你在家不好吗。"
+  ],
+  "en": [
+   "I've been staring at this corner of the wall for 20 minutes. I can't explain it but it's important.",
+   "Sometimes I bark at nothing just to remind everyone I exist.",
+   "The squirrel got away again. Tomorrow I'll be faster. I've been saying this for three years.",
+   "I've been thinking about that piece of chicken you dropped in 2022. It was perfect.",
+   "I don't know what I'm barking at but I'm very committed."
+  ]
+ },
+ "mixed": {
+  "cn": [
+   "你回来了!你回来了!你——(淡定转头)——哦。",
+   "我今天表现得很好。给点奖励吧。不多,就一块。",
+   "你以为我在睡觉?我在监视你。",
+   "我已经等了你两个小时了。(其实一直在睡)",
+   "你出门了吗?你出门了吗?你出门了吗?(门一关)",
+   "爸,我只是把那个抱枕咬了一点点,不影响睡觉的。",
+   "我不是故意打翻水碗的。(是的)",
+   "你朋友来了。我要表演一段。",
+   "妈你刚才叹气是为什么,是嫌我吗,说呀。",
+   "我叫三声你要回应一声,这是基本礼貌。",
+   "拍了那么多照片,发朋友圈了吗,发了多少个赞。",
+   "你以为你是我主人?我让你当的,记住了。",
+   "今天遛弯遇到一只比我帅的狗。我不承认。",
+   "你把我托给邻居,邻居没你疼我。我要投诉。",
+   "我爱你。但你别说出去,影响我形象。"
+  ],
+  "en": [
+   "You're home! You're home! You're— (walks away casually) I didn't miss you.",
+   "I did something while you were gone. I'll let you find it.",
+   "You think I'm sleeping. I'm actually plotting.",
+   "The vet said I was \"a very good boy.\" Screenshot that. Frame it.",
+   "Company's coming over. Time to perform my character.",
+   "I knocked that thing off the table on purpose. I needed to see what would happen.",
+   "You take so many pictures of me and yet I have never been professionally paid. Discuss.",
+   "I heard the word \"walk\" six rooms away. I have superhuman hearing when it matters.",
+   "I can fit on your lap. Yes I can. Watch me.",
+   "You called me a \"little guy.\" I weigh 75 pounds. Have some respect.",
+   "I forgive you for yesterday. Mostly because I forgot what happened.",
+   "You have no idea how hard I work while you're at the office. (sleeping all day)",
+   "I'm not a dog, I'm a lifestyle.",
+   "You rescued me, but honestly, I think I rescued you first.",
+   "I love you. Don't make it weird."
+  ]
+ }
+}
