@@ -1,0 +1,8 @@
+{
+  "framed_print": { "name": "Framed Portrait Print (11×14)", "printful_variant_id": 14292, "wholesale": 30.69, "retail": 49, "emoji": "🖼️", "needsModel": false },
+  "sticker_sheet": { "name": "Kiss-Cut Sticker Sheet", "printful_variant_id": 12917, "wholesale": 5.15, "retail": 12, "emoji": "🧻", "needsModel": false },
+  "mug": { "name": "Glossy Mug (11 oz)", "printful_variant_id": 9323, "wholesale": 8.11, "retail": 22, "emoji": "☕", "needsModel": false },
+  "phone_case": { "name": "Clear Phone Case", "printful_variant_id": 10994, "wholesale": 9.57, "retail": 29, "emoji": "📱", "needsModel": true,
+    "models": { "iphone-11": 10994, "iphone-11-pro": 10995, "iphone-11-pro-max": 10996 } },
+  "blanket": { "name": "Cozy Pet Blanket (30×40)", "printful_variant_id": 44155, "wholesale": 23.31, "retail": 59, "emoji": "🛏️", "needsModel": false }
+}

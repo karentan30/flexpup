@@ -22,6 +22,12 @@ const SKUS = {
   emoji_pack: { amount: 4.99,  product: 'FlexPup — Pet Sticker Pack (4)' },
   pack20:  { amount: 9.90,  product: 'Sceneme — 20 credits' },
   pack50:  { amount: 19.90, product: 'Sceneme — 50 credits' },
+  // POD physical products (retail; Printful wholesale paid from margin)
+  pod_framed_print:  { amount: 49, product: 'FlexPup — Framed Portrait Print' },
+  pod_sticker_sheet: { amount: 12, product: 'FlexPup — Sticker Sheet' },
+  pod_mug:           { amount: 22, product: 'FlexPup — Pet Mug' },
+  pod_phone_case:    { amount: 29, product: 'FlexPup — Pet Phone Case' },
+  pod_blanket:       { amount: 59, product: 'FlexPup — Pet Blanket' },
 };
 const DEFAULT_SKU = 'unlock1';
 
