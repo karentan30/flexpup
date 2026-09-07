@@ -204,10 +204,20 @@ function renderResults(out){RESULTS=out;var box=document.getElementById('results
     d.innerHTML=`<canvas id="cv${idx}" width="600" height="600"></canvas>
       <div class="capbar"><input id="cap${idx}" value="${esc(o.cap)}" oninput="draw(${idx})"><button onclick="reroll(${idx})">↻ another line</button></div>
       <div class="dl-row"><button class="p" onclick="dl(${idx})">⬇ Save</button></div>`;
-    box.appendChild(d);var im=new Image();im.crossOrigin='anonymous';
-    im.onload=()=>{o.img=im;draw(idx);};
-    im.onerror=()=>{d.querySelector('canvas').insertAdjacentHTML('afterend','<p style="color:var(--muted);font-size:12px">Preview couldn\'t load — tap Save to download.</p>');};
-    im.src='/api/image?url='+encodeURIComponent(o.url);});   // same-origin proxy → canvas not tainted, download works
+    box.appendChild(d);
+    var proxied='/api/image?url='+encodeURIComponent(o.url);
+    loadSticker(o,idx,proxied,d);});
+}
+// Load a sticker: cut out the background (transparent die-cut) via @imgly, fall back to the raw image.
+async function loadSticker(o,idx,proxied,card){
+  function useImg(src,transparent){var im=new Image();im.crossOrigin='anonymous';
+    im.onload=()=>{o.img=im;o.transparent=transparent;draw(idx);};
+    im.onerror=()=>{card.querySelector('canvas').insertAdjacentHTML('afterend','<p style="color:var(--muted);font-size:12px">Preview couldn\'t load — tap Save.</p>');};
+    im.src=src;}
+  try{
+    if(window.__removeBg){var blob=await window.__removeBg(proxied);useImg(URL.createObjectURL(blob),true);return;}
+  }catch(e){/* bg-removal unavailable → use raw */}
+  useImg(proxied,false);
 }
 function draw(idx){var o=RESULTS[idx];if(!o||!o.img)return;var cv=document.getElementById('cv'+idx),x=cv.getContext('2d');
   x.clearRect(0,0,600,600);x.drawImage(o.img,0,0,600,600);var cap=document.getElementById('cap'+idx).value.trim();
@@ -224,5 +234,12 @@ function reroll(idx){var o=RESULTS[idx];document.getElementById('cap'+idx).value
 function dl(idx){var cv=document.getElementById('cv'+idx);var a=document.createElement('a');a.download='flexpup-'+RESULTS[idx].sc.id+'.png';a.href=cv.toDataURL('image/png');a.click();}
 function downloadAll(){RESULTS.forEach((_,i)=>setTimeout(()=>dl(i),i*300));}
 
+</script>
+<!-- Transparent die-cut stickers: cut the background out in the browser (free, no server). -->
+<script type="module">
+  try{
+    const { removeBackground } = await import('https://esm.sh/@imgly/background-removal@1.5.7');
+    window.__removeBg = (src)=>removeBackground(src);
+  }catch(e){ console.warn('bg-removal unavailable, stickers keep their background', e); }
 </script>
 </body></html>
