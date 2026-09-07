@@ -60,6 +60,12 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.6;marg
 .sc-foot{padding:14px 16px;display:flex;align-items:center;justify-content:space-between}.sc-foot .h{font-weight:800}.sc-foot .h b{color:var(--gold)}.sc-foot .ai{font-size:10px;color:var(--muted)}
 .qr{width:40px;height:40px;background:repeating-linear-gradient(0deg,#222 0 4px,transparent 4px 8px),repeating-linear-gradient(90deg,#222 0 4px,transparent 4px 8px);background-size:8px 8px;border-radius:8px}
 .hint{text-align:center;font-size:12px;color:var(--muted);padding:10px 22px}
+.wmrow{display:flex;gap:10px;align-items:center;margin:14px 22px 0;font-size:13px;color:#4a463f;cursor:pointer}
+.wmrow input{width:20px;height:20px;accent-color:var(--gold);flex-shrink:0}
+.gallery{padding:6px 0 4px}.gallery h4{font-size:12px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;font-weight:800;padding:0 22px 8px}
+.gstrip{display:flex;gap:10px;overflow-x:auto;padding:0 22px 6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.gstrip::-webkit-scrollbar{display:none}
+.gstrip img{width:118px;height:158px;object-fit:cover;border-radius:14px;flex-shrink:0;border:1px solid var(--line)}
 .err{background:#fbeaea;border:1px solid #e7c3c3;color:#a33;font-size:13px;padding:10px 14px;border-radius:12px;margin:0 22px 12px;display:none}
 </style></head>
 <body><div class="app">
@@ -74,6 +80,16 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.6;marg
     <div class="aha"><div class="ba"><span>THEM</span><img src="assets/pet/petface.jpg"></div><div class="arrow">→</div><div class="ba"><span>FLEXPUP</span><img src="assets/pet/dog03.jpg"></div></div>
     <div class="pad" style="padding-top:8px"><button class="btn gold" onclick="go('s-gate')">Start →</button>
       <small class="legal">AI-generated · your pet only · $2.99 for 4 photos.</small></div>
+    <div class="gallery">
+      <h4>🐾 Pets already living the 1%</h4>
+      <div class="gstrip">
+        <img src="assets/pet/dog01.jpg"><img src="assets/pet/show_dog19.jpg"><img src="assets/pet/dog03.jpg">
+        <img src="assets/pet/show_dog13.jpg"><img src="assets/pet/dog06.jpg"><img src="assets/pet/show_dog20.jpg">
+        <img src="assets/pet/dog04.jpg"><img src="assets/pet/show_dog09.jpg"><img src="assets/pet/dog07.jpg">
+        <img src="assets/pet/show_dog18.jpg"><img src="assets/pet/dog02.jpg"><img src="assets/pet/show_dog15.jpg">
+      </div>
+    </div>
+    <div class="pad" style="padding-top:4px"><button class="btn gold" onclick="go('s-gate')">Make my pet a star →</button></div>
   </section>
 
   <section class="screen" id="s-gate"><button class="back" onclick="go('s-landing')">‹</button>
@@ -121,16 +137,18 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.6;marg
   </section>
 
   <section class="screen" id="s-result"><button class="back" onclick="go('s-scenes')">‹</button>
-    <div class="result-img"><img id="resImg" src="assets/pet/dog01.jpg"><span class="ailbl">✨ AI-generated</span><span class="wm">@flexpup</span></div>
+    <div class="result-img"><img id="resImg" src="assets/pet/dog01.jpg" crossorigin="anonymous"><span class="ailbl">✨ AI-generated</span><span class="wm" id="wmTag">@flexpup</span></div>
+    <label class="wmrow"><input type="checkbox" id="wmToggle" checked onchange="toggleWm()"><span><b>Keep @flexpup watermark</b> — helps friends find it (off = clean image)</span></label>
     <div class="hint" id="remainTxt"></div>
-    <div class="row2"><button class="btn ghost" onclick="anotherScene()">Another scene</button><button class="btn" onclick="go('s-share')">Share</button></div>
+    <div class="row2"><button class="btn gold" onclick="downloadImg(this)">⬇ Download</button><button class="btn" onclick="shareImg(this)">Share</button></div>
+    <div class="row2" style="padding-top:2px"><button class="btn ghost" onclick="anotherScene()">Try another scene</button></div>
   </section>
 
   <section class="screen" id="s-share"><button class="back" onclick="go('s-result')">‹</button>
     <div class="sharewrap"><div class="tag" style="text-align:center;display:block;margin-bottom:12px">Share card</div>
       <div class="sc"><div class="sc-imgs"><div><span>YOURS</span><img id="scMain" src="assets/pet/dog02.jpg"></div><div><span>ANOTHER</span><img src="assets/pet/dog03.jpg"></div></div>
         <div class="sc-foot"><div><div class="h">FLEX<b>PUP</b> 🐾</div><div class="ai">✨ AI · make your pet's at flexpup</div></div><div class="qr"></div></div></div>
-      <div class="pad" style="padding:8px 0"><button class="btn gold" onclick="alert('→ Share to TikTok/IG with AI flag. Stub.')">Share to TikTok / IG</button>
+      <div class="pad" style="padding:8px 0"><button class="btn gold" onclick="shareImg(this)">Share to TikTok / IG</button>
         <button class="btn ghost" style="margin-top:10px" onclick="go('s-landing')">Start over</button></div></div>
   </section>
 
@@ -211,11 +229,47 @@ async function runGenerate(){
     const j=await r.json(); clearInterval(t); prog.style.width='100%';
     if(r.status===402){ localStorage.removeItem('fp_paidOrder'); showErr(j.error||'Please unlock.'); go('s-paywall'); return; }
     if(!j.url) throw new Error(j.error||'generation failed');
-    setTimeout(()=>{document.getElementById('resImg').src=j.url;document.getElementById('scMain').src=j.url;
+    setTimeout(()=>{window.resultUrl=j.url; const px='/api/image?url='+encodeURIComponent(j.url);
+      document.getElementById('resImg').src=px; document.getElementById('scMain').src=px;
+      document.getElementById('wmToggle').checked=true; toggleWm();
       document.getElementById('remainTxt').textContent=(j.remaining>0?(j.remaining+' photos left in this pack'):'Pack used up — unlock more for new scenes');
       if(j.remaining<=0)localStorage.removeItem('fp_paidOrder'); go('s-result');},350);
   }catch(e){clearInterval(t);showErr('Generation failed: '+e.message);go('s-scenes');}
 }
 function anotherScene(){ go('s-scenes'); }
+
+// ---- 水印 / 下载 / 分享 ----
+function toggleWm(){ document.getElementById('wmTag').style.display=document.getElementById('wmToggle').checked?'block':'none'; }
+// 把结果图画到 canvas,按开关决定是否烧录 @flexpup 水印,返回 blob
+async function renderBlob(){
+  const img=document.getElementById('resImg');
+  await img.decode().catch(()=>{});
+  const c=document.createElement('canvas'); c.width=img.naturalWidth||1024; c.height=img.naturalHeight||1365;
+  const x=c.getContext('2d'); x.drawImage(img,0,0,c.width,c.height);
+  if(document.getElementById('wmToggle').checked){
+    const fs=Math.round(c.width*0.036); x.font='800 '+fs+'px -apple-system,sans-serif';
+    x.textAlign='right'; x.textBaseline='bottom';
+    x.shadowColor='rgba(0,0,0,.5)'; x.shadowBlur=fs*0.4;
+    x.fillStyle='rgba(255,255,255,.92)'; x.fillText('@flexpup',c.width-fs*0.6,c.height-fs*0.6);
+  }
+  return await new Promise(res=>c.toBlob(res,'image/jpeg',0.95));
+}
+async function downloadImg(btn){
+  const old=btn.textContent; btn.textContent='Preparing…';
+  try{ const b=await renderBlob(); const u=URL.createObjectURL(b);
+    const a=document.createElement('a'); a.href=u; a.download='flexpup-'+(picked?picked.id:'pet')+'.jpg'; a.click();
+    setTimeout(()=>URL.revokeObjectURL(u),4000);
+  }catch(e){ if(window.resultUrl) window.open(window.resultUrl,'_blank'); }
+  btn.textContent=old;
+}
+async function shareImg(btn){
+  const old=btn.textContent; btn.textContent='Opening…';
+  try{ const b=await renderBlob(); const f=new File([b],'flexpup.jpg',{type:'image/jpeg'});
+    if(navigator.canShare && navigator.canShare({files:[f]})){
+      await navigator.share({files:[f], text:'How I got these cutest pics of my pup 🐾 (AI) — flexpup.vercel.app'});
+    } else { await downloadImg(btn); alert('Saved! Open TikTok/Instagram and upload it 🐾'); }
+  }catch(e){}
+  btn.textContent=old;
+}
 renderScenes(); checkPaidThenGen();
 </script></body></html>
