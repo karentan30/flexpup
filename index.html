@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>FlexPup — your pet, living the 1% life</title>
+<style>
+:root{--cream:#f7f3ec;--ink:#1c1b19;--gold:#c8a45c;--muted:#8a8377;--line:#e4dccf;--soft:#efe7db}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:#e9e3d8;font-family:-apple-system,"Segoe UI",Roboto,"PingFang SC",sans-serif;color:var(--ink)}
+.app{max-width:440px;margin:0 auto;min-height:100vh;background:var(--cream);position:relative;overflow:hidden}
+.serif{font-family:"Playfair Display",Georgia,serif}
+.screen{display:none;min-height:100vh;animation:fade .4s ease}.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.btn{display:block;width:100%;padding:16px;border:none;border-radius:40px;font-size:16px;font-weight:700;background:var(--ink);color:var(--cream);cursor:pointer;letter-spacing:.3px}
+.btn:active{transform:scale(.98)}.btn.gold{background:linear-gradient(100deg,#d0ab5f,#a9853f);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}.btn:disabled{opacity:.35}
+.pad{padding:22px}.tag{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);font-weight:700}
+small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.6;margin-top:14px}
+.back{position:absolute;top:16px;left:16px;z-index:9;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.85);border:1px solid var(--line);font-size:18px;cursor:pointer}
+.hero{position:relative;height:62vh;min-height:430px;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.hero .grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,18,15,.85) 8%,rgba(20,18,15,.1) 55%,transparent)}
+.hero .cap{position:absolute;left:0;right:0;bottom:24px;padding:0 24px;color:#fff}
+.hero .cap h1{font-size:38px;line-height:1.05;font-weight:800}.hero .cap p{margin-top:12px;font-size:15px;opacity:.92}
+.brandbar{display:flex;align-items:center;justify-content:space-between;padding:16px 22px}
+.brand{font-size:20px;font-weight:800;letter-spacing:1px}.brand b{color:var(--gold)}
+.aha{display:flex;gap:10px;padding:18px 22px 6px}.aha .ba{flex:1;border-radius:14px;overflow:hidden;position:relative;aspect-ratio:1;background:var(--soft)}
+.aha .ba img{width:100%;height:100%;object-fit:cover}.aha .ba span{position:absolute;top:8px;left:8px;font-size:10px;font-weight:700;background:rgba(0,0,0,.6);color:#fff;padding:3px 8px;border-radius:20px}
+.arrow{align-self:center;font-size:22px;color:var(--gold)}
+.check{display:flex;gap:12px;align-items:flex-start;padding:15px;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;background:#fff;cursor:pointer}
+.check input{width:22px;height:22px;margin-top:1px;accent-color:var(--gold);flex-shrink:0}.check div{font-size:13px;line-height:1.5;color:#4a463f}.check b{color:var(--ink)}
+.drop{border:2px dashed var(--line);border-radius:20px;padding:34px 20px;text-align:center;background:#fff;margin:8px 0 16px}
+.drop .ring{width:88px;height:88px;border-radius:50%;margin:0 auto 14px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:32px;overflow:hidden}
+.tips{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:13px;color:#4a463f;line-height:1.9}.tips b{color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 22px 22px}
+.card{border-radius:16px;overflow:hidden;position:relative;aspect-ratio:3/4;background:var(--soft);cursor:pointer;border:2.5px solid transparent}.card.sel{border-color:var(--gold)}
+.card img{width:100%;height:100%;object-fit:cover}.card .info{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff}
+.card .info h3{font-size:14px;font-weight:700}.card .fire{position:absolute;top:8px;left:8px;font-size:11px;background:rgba(200,164,92,.95);color:#fff;padding:3px 8px;border-radius:20px;font-weight:700}
+.genwrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center}
+.genpreview{width:210px;aspect-ratio:3/4;border-radius:20px;overflow:hidden;position:relative;margin-bottom:26px;box-shadow:0 14px 40px rgba(120,100,60,.25);background:var(--soft)}
+.genpreview img{width:100%;height:100%;object-fit:cover;filter:blur(9px) brightness(.9);transform:scale(1.08)}
+.genpreview .shimmer{position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);background-size:220% 100%;animation:shim 1.5s linear infinite}
+@keyframes shim{from{background-position:120% 0}to{background-position:-120% 0}}
+.genwrap h2{font-size:23px;font-weight:800;margin-bottom:8px}.genwrap p{color:var(--muted);font-size:14px;min-height:20px}
+.progline{height:6px;width:70%;background:var(--soft);border-radius:6px;margin:22px auto 18px;overflow:hidden}.progline i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d0ab5f,#a9853f);transition:width .35s}
+.genstrip{font-size:12px;color:var(--gold);font-weight:700;background:#fff;border:1px solid var(--line);padding:8px 16px;border-radius:20px}
+.result-img{position:relative;background:#000}.result-img img{width:100%;display:block}
+.wm{position:absolute;right:12px;bottom:12px;font-size:12px;font-weight:800;color:#fff;letter-spacing:1px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.ailbl{position:absolute;left:12px;top:12px;font-size:10px;background:rgba(0,0,0,.55);color:#fff;padding:4px 9px;border-radius:20px}
+.lowqual{position:absolute;left:12px;bottom:12px;font-size:11px;background:rgba(255,255,255,.9);color:#333;padding:4px 10px;border-radius:20px}
+.paywall{margin:16px 22px 0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.paywall .price{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}.paywall .price b{font-size:30px}.paywall .price s{color:var(--muted);font-size:15px}
+.paywall ul{list-style:none;margin:12px 0 16px;font-size:13.5px;color:#4a463f}.paywall li{padding:5px 0 5px 24px;position:relative}.paywall li:before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:800}
+.row2{display:flex;gap:10px;padding:14px 22px 30px}.row2 .btn{padding:14px;font-size:14px}
+.sharewrap{padding:64px 22px 22px}.sc{background:var(--soft);border-radius:22px;overflow:hidden;box-shadow:0 12px 40px rgba(120,100,60,.18);border:1px solid var(--line)}
+.sc-imgs{display:flex}.sc-imgs div{flex:1;position:relative;aspect-ratio:3/4;overflow:hidden}.sc-imgs img{width:100%;height:100%;object-fit:cover}
+.sc-imgs div span{position:absolute;top:8px;left:8px;font-size:10px;font-weight:700;background:rgba(0,0,0,.6);color:#fff;padding:3px 8px;border-radius:16px}
+.sc-foot{padding:14px 16px;display:flex;align-items:center;justify-content:space-between}.sc-foot .h{font-weight:800}.sc-foot .h b{color:var(--gold)}.sc-foot .ai{font-size:10px;color:var(--muted)}
+.qr{width:40px;height:40px;background:repeating-linear-gradient(0deg,#222 0 4px,transparent 4px 8px),repeating-linear-gradient(90deg,#222 0 4px,transparent 4px 8px);background-size:8px 8px;border-radius:8px}
+.hint{text-align:center;font-size:12px;color:var(--muted);padding:10px 22px}
+</style></head>
+<body><div class="app">
+
+  <section class="screen active" id="s-landing">
+    <div class="brandbar"><div class="brand">FLEX<b>PUP</b> 🐾</div><div class="tag">Your pet, the 1%</div></div>
+    <div class="hero"><img src="assets/pet/dog01.jpg" alt=""><div class="grad"></div>
+      <div class="cap"><div class="tag" style="color:#e7cf95">Fake it till they make it</div>
+        <h1 class="serif">Your pet deserves<br>the yacht life.</h1>
+        <p>One photo of your dog, cat or bunny → private jets, red carpets, Michelin dinners. The flex they were born for.</p></div>
+    </div>
+    <div class="aha"><div class="ba"><span>THEM</span><img src="assets/pet/petface.jpg"></div><div class="arrow">→</div><div class="ba"><span>FLEXPUP</span><img src="assets/pet/dog03.jpg"></div></div>
+    <div class="pad" style="padding-top:8px"><button class="btn gold" onclick="go('s-gate')">Try it free →</button>
+      <small class="legal">First photo free · AI-generated · your pet only.</small></div>
+  </section>
+
+  <section class="screen" id="s-gate"><button class="back" onclick="go('s-landing')">‹</button>
+    <div class="pad" style="padding-top:70px"><div class="tag">Quick check</div>
+      <h1 class="serif" style="font-size:28px;margin:8px 0 20px">Just one thing</h1>
+      <label class="check"><input type="checkbox" id="c1" onchange="gate()"><div><b>This is my pet</b> (or a photo I have the right to use). No people's faces.</div></label>
+      <label class="check"><input type="checkbox" id="c2" onchange="gate()"><div>I understand images are <b>AI-generated & labeled</b> as such.</div></label>
+      <button class="btn" id="gateBtn" disabled onclick="go('s-upload')">Continue</button>
+      <small class="legal">Pets only — no BIPA/face-data. See Privacy & Terms.</small></div>
+  </section>
+
+  <section class="screen" id="s-upload"><button class="back" onclick="go('s-gate')">‹</button>
+    <div class="pad" style="padding-top:70px"><div class="tag">Step 1</div>
+      <h1 class="serif" style="font-size:28px;margin:8px 0 4px">Upload your pet</h1>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:14px">A clear, front-on shot works best.</p>
+      <div class="drop" onclick="fakeUpload()"><div class="ring" id="ring">🐶</div>
+        <div style="font-weight:700" id="upTxt">Tap to upload</div><div style="font-size:12px;color:var(--muted);margin-top:4px" id="upSub">Face clear · good light</div></div>
+      <div class="tips"><b>Best results:</b><br>✓ Pet facing camera &nbsp; ✓ Face large & sharp<br>✓ Even light &nbsp; ✗ Blurry / far away</div>
+      <button class="btn" id="upBtn" disabled style="margin-top:16px" onclick="go('s-scenes')">Pick a scene →</button></div>
+  </section>
+
+  <section class="screen" id="s-scenes"><button class="back" onclick="go('s-upload')">‹</button>
+    <div class="pad" style="padding:70px 22px 6px"><div class="tag">Step 2</div>
+      <h1 class="serif" style="font-size:28px;margin:8px 0 2px">Where to?</h1>
+      <p style="color:var(--muted);font-size:14px">New flex drops every week.</p></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="screen" id="s-gen"><div class="genwrap">
+    <div class="genpreview"><img id="genPrev" src="assets/pet/dog01.jpg"><div class="shimmer"></div></div>
+    <h2 class="serif" id="genTitle">Styling your pup…</h2><p id="genMsg">Warming up the scene</p>
+    <div class="progline"><i id="prog"></i></div><div class="genstrip">🐾 8,300 flexes made today</div></div>
+  </section>
+
+  <section class="screen" id="s-result"><button class="back" onclick="go('s-scenes')">‹</button>
+    <div class="result-img"><img id="resImg" src="assets/pet/dog01.jpg"><span class="ailbl">✨ AI-generated</span><span class="lowqual">Free preview · low-res</span><span class="wm">@flexpup</span></div>
+    <div class="paywall"><div class="price"><b>$2.99</b><s>$7.99</s><span style="color:var(--gold);font-weight:700;font-size:13px">launch</span></div>
+      <div style="font-size:13px;color:var(--muted)">Unlock full-res + 3 more flexes</div>
+      <ul><li>Full resolution, no watermark</li><li>4 photos, this scene + variations</li><li>Post it anywhere</li></ul>
+      <button class="btn gold" id="payBtn" onclick="pay('unlock1',this)">Unlock HD — $2.99</button></div>
+    <div class="row2"><button class="btn ghost" onclick="go('s-scenes')">Another scene</button><button class="btn" onclick="go('s-share')">Share free</button></div>
+  </section>
+
+  <section class="screen" id="s-share"><button class="back" onclick="go('s-result')">‹</button>
+    <div class="sharewrap"><div class="tag" style="text-align:center;display:block;margin-bottom:12px">Share card</div>
+      <div class="sc"><div class="sc-imgs"><div><span>MICHELIN</span><img src="assets/pet/dog03.jpg"></div><div><span>YACHT</span><img id="scMain" src="assets/pet/dog02.jpg"></div></div>
+        <div class="sc-foot"><div><div class="h">FLEX<b>PUP</b> 🐾</div><div class="ai">✨ AI · make your pet's free</div></div><div class="qr"></div></div></div>
+      <div class="pad" style="padding:8px 0"><button class="btn gold" onclick="alert('→ Share to TikTok/IG with AI flag. MVP stub.')">Share to TikTok / IG</button>
+        <button class="btn ghost" style="margin-top:10px" onclick="go('s-landing')">Start over</button></div></div>
+  </section>
+
+</div>
+<script>
+const SCENES=[
+ {id:'jet',name:'Private Jet',hot:'🔥 #1',img:'assets/pet/dog01.jpg'},
+ {id:'yacht',name:'Yacht Deck',hot:'Trending',img:'assets/pet/dog02.jpg'},
+ {id:'michelin',name:'Michelin Dinner',hot:'🔥 Hot',img:'assets/pet/dog03.jpg'},
+ {id:'redcarpet',name:'Red Carpet',hot:'New',img:'assets/pet/dog04.png'},
+ {id:'ski',name:'Ski Resort',hot:'Trending',img:'assets/pet/dog05.png'},
+ {id:'money',name:'Make It Rain',hot:'🔥 Viral',img:'assets/pet/dog06.png'},
+ {id:'podium',name:'Champion Podium',hot:'New',img:'assets/pet/dog07.jpg'},
+ {id:'tennis',name:'Tennis Star',hot:'New',img:'assets/pet/dog08.jpg'},
+];
+let picked=null;
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function gate(){document.getElementById('gateBtn').disabled=!(c1.checked&&c2.checked);}
+function fakeUpload(){document.getElementById('ring').innerHTML='<img src="assets/pet/petface.jpg" style="width:100%;height:100%;object-fit:cover">';document.getElementById('upTxt').textContent='Cutie detected ✓';document.getElementById('upSub').textContent='Clear & front-facing';document.getElementById('upBtn').disabled=false;}
+function renderScenes(){grid.innerHTML=SCENES.map(s=>`<div class="card" onclick="pick('${s.id}',this)"><img src="${s.img}"><span class="fire">${s.hot}</span><div class="info"><h3>${s.name}</h3></div></div>`).join('');}
+function pick(id,el){picked=SCENES.find(x=>x.id===id);document.querySelectorAll('.card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');setTimeout(generate,180);}
+const MSGS=['Onto the scene…','Tiny sunglasses on…','Pouring the champagne…','Catching the light…','De-AI polish…'];
+function generate(){document.getElementById('genPrev').src=picked.img;go('s-gen');document.getElementById('genTitle').textContent='Styling for '+picked.name;
+ let p=0,i=0;const prog=document.getElementById('prog'),msg=document.getElementById('genMsg');
+ const t=setInterval(()=>{p+=8+Math.random()*20;if(p>100)p=100;prog.style.width=p+'%';msg.textContent=MSGS[Math.min(i++,MSGS.length-1)];
+  if(p>=100){clearInterval(t);setTimeout(()=>{document.getElementById('resImg').src=picked.img;document.getElementById('scMain').src=picked.img;go('s-result');},400);}},420);}
+async function pay(sku,btn){const old=btn.textContent;btn.disabled=true;btn.textContent='Opening checkout…';
+ try{const r=await fetch('/api/pay/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sku})});const j=await r.json();
+  if(!j.url)throw new Error(j.error||'failed');localStorage.setItem('sm_order',j.orderNo);window.location.href=j.url;
+ }catch(e){btn.disabled=false;btn.textContent=old;alert('Payment unavailable: '+e.message);}}
+renderScenes();
+</script></body></html>
