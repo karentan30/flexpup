@@ -22,12 +22,25 @@
 - **已有账户(users)+订阅(CLONE/TEXT_MONTHLY·chapter订阅)+裂变(invite/affiliate)+微信/支付宝/Stripe三通道**
 - 做共享增长中台=**走路A扩它**(源码有·别新建)。部署:scp server.py + `systemctl restart xinshen.service`
 
-## 三、基建迁移:退役大陆阿里云(省$300/月)· 进行中
+## 三、基建迁移:退役大陆阿里云(省$300/月)· 服务器侧✅已完成·只剩DNS+释放
 - **大陆 8.160.175.232(阿里云·key ~/.ssh/xinshen)**:217次请求**全是bot**(Let's Encrypt/Googlebot/IP扫描)·**零真实用户**·4个测试用户
-- **它跑着**:mylumee.cn/wujing.mylumee.cn(转发HK)+ **彩镜caijing(/caijing静态40M)** + **YiYi(/yiyi-api→:8770 speech服务+/yiyi-ceping)**
-- **HK已有**:Lumee/舞镜(:3006)/shenyuan/mylumee.cn块。**HK只缺彩镜+YiYi**
-- **迁移剩余步骤**:①拷caijing+yiyi-ceping静态→HK /www/ ②yiyi_speech_service.py→HK起:8770 ③HK Caddy加/caijing、/yiyi-api、/yiyi-ceping + wujing.mylumee.cn ④DNS改.cn→HK(Namecheap/阿里云DNS·⚠️.cn指HK中国访问降级/ICP风险·但无真实用户可接受)⑤关阿里云实例
-- 静态站已备份本地:`~/Desktop/大陆迁移HK-*/www/`(caijing40M/wujing24M)+ `~/Desktop/大陆服务器备份-*/xinshen-大陆.db`
+- **它跑的**:mylumee.cn/wujing.mylumee.cn(转发HK)+ 彩镜caijing(/caijing) + YiYi(/yiyi-api→:8770 + /yiyi-ceping)
+
+**✅ 已完成(HK侧·我做的):**
+- 拷 caijing(39M)+ yiyi-ceping(含_speech_store)→ HK `/www/`
+- HK起 `yiyi-speech.service`(:8770·active·env=`/etc/yiyi-speech.env`含讯飞XFYUN key)
+- HK Caddy加路由:`/caijing/*`、`/yiyi-api/*`→:8770、`/yiyi-ceping*` + `wujing.mylumee.cn`(备份`/etc/caddy/Caddyfile.bak.migrate-*`)
+- `caddy validate`通过+reload·flexpup-hub/Lumee/舞镜**全没断**
+
+**⏳ 剩2步(Karen做·我无DNS/阿里云权限):**
+1. **改DNS**(阿里云DNS后台)3条A记录 大陆→HK:
+   - `mylumee.cn` → 47.242.80.65(原8.160.175.232)
+   - `www.mylumee.cn` → 47.242.80.65
+   - `wujing.mylumee.cn` → 47.242.80.65
+   - 改完传播几分钟→Caddy自动申SSL证书(现在https 000是因证书还没申·DNS一到就好)
+2. **验证全绿后** → 阿里云控制台**释放大陆实例**·省$300/月
+- ⚠️ .cn指HK中国访问降级/ICP风险·但无真实用户可接受·**别急着关·先改DNS+验证再释放**
+- 备份:`~/Desktop/大陆迁移HK-*/www/` + `~/Desktop/大陆服务器备份-*/xinshen-大陆.db`
 
 ## 🔴 红线/坑
 - 别关HK 47.242.80.65(hub+所有项目)·只释放大陆8.160.175.232
