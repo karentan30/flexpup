@@ -16,7 +16,8 @@ const PRODUCTS = require('../../pod_products.json');
 const PF_KEY   = (process.env.PRINTFUL_API_KEY || '').trim();
 const PF_STORE = (process.env.PRINTFUL_STORE_ID || '18719329').trim();
 const PF_CONFIRM = process.env.PRINTFUL_CONFIRM === '1';
-const HUB_BASE = (process.env.LUMEE_HUB || '').replace(/\/$/, '');
+// hub base: force Hong Kong (www.mylumee.app) when env is empty or still the decommissioned mainland .cn
+const HUB_BASE = (function(){var h=(process.env.LUMEE_HUB||'').replace(/\/$/,'');return (!h||/mylumee\.cn/.test(h))?'https://www.mylumee.app':h;})();
 const HUB_SECRET = process.env.HUB_SECRET_SCENEME || '';
 const PROJECT_ID = 'sceneme';
 

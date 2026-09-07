@@ -16,7 +16,8 @@
 const { createHmac } = require('crypto');
 
 const SF_KEY = (process.env.SILICONFLOW_API_KEY || '').trim();
-const HUB_BASE = (process.env.LUMEE_HUB || '').replace(/\/$/, '');
+// hub base: force Hong Kong (www.mylumee.app) when env is empty or still the decommissioned mainland .cn
+const HUB_BASE = (function(){var h=(process.env.LUMEE_HUB||'').replace(/\/$/,'');return (!h||/mylumee\.cn/.test(h))?'https://www.mylumee.app':h;})();
 const HUB_SECRET = process.env.HUB_SECRET_SCENEME || '';
 const PROJECT_ID = 'sceneme';
 const VIDS_PER_ORDER = parseInt(process.env.VIDS_PER_ORDER || '2', 10);
