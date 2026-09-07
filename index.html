@@ -240,14 +240,16 @@ async function loadScenes(){
     renderScenes(); renderHomeStrip();
   }catch(e){ console.error('scenes load failed',e); }
 }
-// Homepage showcase — one standout per category (max range + all-pet), refreshes as thumbnails land.
+// Homepage showcase — big cross-category wall (all available thumbnails, round-robin by category
+// for maximum visible range + all-pet). Lazy-loaded so it stays fast even with hundreds.
 function renderHomeStrip(){
   const strip=document.getElementById('homeStrip'); if(!strip||!SCENES.length) return;
-  const order=['Luxury Flex','World Ethnic Styles','Warriors','Fine Art & Abstract','Zodiac & Astrology','Sports','Professions','Art Media & Aesthetics','Royal & Historical','World Landmarks','Movie Genres','World Cultures','Seasonal & Holiday','Fantasy & Dreams','Art Style'];
-  const byc={}; SCENES.forEach(s=>{(byc[s.category]=byc[s.category]||[]).push(s);});
-  const picks=[]; order.forEach(c=>{if(byc[c]&&byc[c].length)picks.push(byc[c][0]);});
-  SCENES.forEach(s=>{if(picks.length<14&&!picks.includes(s))picks.push(s);});
-  strip.innerHTML=picks.slice(0,14).map(s=>`<img loading="lazy" src="${s.img}" alt="${esc(s.name)}">`).join('');
+  const byc={}, cats=[];
+  SCENES.forEach(s=>{ if(!byc[s.category]){byc[s.category]=[];cats.push(s.category);} byc[s.category].push(s); });
+  // round-robin across categories → diverse ordering, then include everything with a thumbnail
+  const picks=[]; let added=true, i=0;
+  while(added){ added=false; cats.forEach(c=>{ if(byc[c][i]){picks.push(byc[c][i]);added=true;} }); i++; }
+  strip.innerHTML=picks.map(s=>`<img loading="lazy" src="${s.img}" alt="${esc(s.name)}" title="${esc(s.name)}">`).join('');
 }
 let picked=null;
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
