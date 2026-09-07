@@ -214,13 +214,6 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.7;marg
     <div class="row2"><button class="btn gold" onclick="downloadVid(this)">⬇ Save video</button><button class="btn" onclick="shareVid(this)">Share</button></div>
   </section>
 
-  <section class="screen" id="s-share"><button class="back" onclick="go('s-result')">‹</button>
-    <div class="sharewrap"><div class="tag" style="text-align:center;display:block;margin-bottom:14px">Your share card</div>
-      <div class="sc"><div class="sc-imgs"><div><span>Yours</span><img id="scMain" src="assets/pet/dog02.jpg"></div><div><span>The look</span><img src="assets/pet/dog05.jpg"></div></div>
-        <div class="sc-foot"><div><div class="h">Flex<b>Pup</b> 🐾</div><div class="ai">AI pet studio · make yours at flexpup</div></div><div class="qr"></div></div></div>
-      <div class="pad" style="padding:8px 0"><button class="btn gold" onclick="shareImg(this)">Share to TikTok / IG</button>
-        <button class="btn ghost" style="margin-top:10px" onclick="go('s-landing')">Start over</button></div></div>
-  </section>
 
   <div class="err" id="errBox"></div>
 </div>
@@ -300,7 +293,7 @@ async function runGenerate(){
     if(r.status===402){ localStorage.removeItem('fp_paidOrder'); showErr(j.error||'Please unlock.'); go('s-paywall'); return; }
     if(!j.url) throw new Error(j.error||'generation failed');
     setTimeout(()=>{window.resultUrl=j.url; const px='/api/image?url='+encodeURIComponent(j.url);
-      document.getElementById('resImg').src=px; document.getElementById('scMain').src=px;
+      document.getElementById('resImg').src=px;
       document.getElementById('wmToggle').checked=true; toggleWm();
       document.getElementById('remainTxt').textContent=(j.remaining>0?(j.remaining+' photos left in this pack'):'Pack used up — unlock more for new scenes');
       if(j.remaining<=0)localStorage.removeItem('fp_paidOrder'); go('s-result');},350);
