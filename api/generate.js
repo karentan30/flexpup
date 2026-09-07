@@ -21,18 +21,16 @@ const PROJECT_ID = 'sceneme';
 const GENS_PER_ORDER = parseInt(process.env.GENS_PER_ORDER || '4', 10);
 const MODEL = 'doubao-seedream-4-0-250828';
 
-const PRE = '真实手机抓拍照片,保持输入照片里这只宠物完全相同的样子毛色和脸(同一只宠物);';
-const SUF = '。真实照片质感自然光有真实阴影,炫富贵气松弛感。不要卡通不要3D不要塑料感不要过曝不要文字不要人不要真实名人或品牌logo。';
-const SCENES = {
-  jet:'它坐在豪华私人飞机米色真皮座椅上戴迷你墨镜,旁边香槟杯,舷窗外蓝天云海阳光',
-  yacht:'它戴迷你墨镜坐豪华游艇船头甲板,深蓝大海海风吹动毛发,阳光明媚',
-  michelin:'它围着小餐巾坐米其林餐厅餐桌前,面前白瓷盘精致龙虾大餐,烛光红酒',
-  redcarpet:'它戴迷你黑色领结站颁奖典礼红毯上,背景红毯与闪光灯氛围虚化',
-  ski:'它戴迷你滑雪镜和小围巾坐雪山滑雪场雪道,蓝天雪峰阳光',
-  money:'它戴迷你墨镜坐豪华沙发,周围漫天飘落风格化绿色钞票(非1:1仿真真钞),金色奢华客厅',
-  podium:'它戴金牌站冠军领奖台最高处昂首,背景观众席虚化(不出现五环或奥运字样)',
-  tennis:'它叼迷你网球拍站红土网球场,阳光运动明星感',
-};
+// Universal wrapper — keep the SAME pet (identity), plus safety guards.
+// NOTE: style direction (cartoon / painterly / realistic) comes entirely from each scene's own prompt,
+// so we must NOT add "不要卡通不要3D" here (it would break Ghibli / Pixar / pixel / LEGO styles).
+const PRE = 'Keep the exact same pet from the input photo — same species, fur color, markings and face (the same individual pet). ';
+const SUF = ' . Keep it the same pet, no text or watermark, no humans, no real celebrities or brand logos.';
+
+// 462-scene library merged from ai-pet (styles.json → scenes.json). Each scene carries its own full prompt.
+const SCENE_LIST = require('../scenes.json');
+const SCENES = {};
+for (const s of SCENE_LIST) { if (s && s.id && s.prompt) SCENES[s.id] = s.prompt; }
 
 function hubSign(secret, payload) {
   return createHmac('sha256', secret).update(Buffer.from(payload, 'utf-8')).digest('hex');

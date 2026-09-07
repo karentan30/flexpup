@@ -70,6 +70,9 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.7;marg
 .drop .ring{width:100px;height:100px;border-radius:50%;margin:0 auto 16px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
 .tips{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;font-size:13px;color:#544e44;line-height:2;box-shadow:var(--shadow-sm)}.tips b{color:var(--ink)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:6px 24px 26px}
+.cat-head{grid-column:1/-1;font-family:var(--serif,serif);font-size:17px;font-weight:700;color:#2a2521;margin:16px 2px 2px;display:flex;align-items:baseline;gap:8px}
+.cat-head span{font-family:inherit;font-size:12px;font-weight:500;color:var(--muted)}
+.cat-head:first-child{margin-top:4px}
 .card{border-radius:18px;overflow:hidden;position:relative;aspect-ratio:3/4;background:var(--soft);cursor:pointer;border:2.5px solid transparent;box-shadow:var(--shadow-md);transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
 .card:active{transform:scale(.975)}
 .card.sel{border-color:var(--gold);box-shadow:0 0 0 3px rgba(193,154,79,.22),var(--shadow-md)}
@@ -134,7 +137,7 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.7;marg
     <div class="pad" style="padding-top:10px"><button class="btn gold" onclick="go('s-gate')">Start the shoot</button>
       <small class="legal">AI-generated · your pet only · $2.99 for a pack of 4.</small></div>
     <div class="gallery">
-      <h4>30+ luxury scenes · new drops weekly</h4>
+      <h4>400+ scenes · any pet · new drops weekly</h4>
       <div class="gstrip">
         <img src="assets/pet/show_dog19.jpg"><img src="assets/pet/dog05.jpg"><img src="assets/pet/show_dog13.jpg">
         <img src="assets/pet/dog06.jpg"><img src="assets/pet/show_dog20.jpg"><img src="assets/pet/dog04.jpg">
@@ -167,7 +170,8 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.7;marg
   <section class="screen" id="s-scenes"><button class="back" onclick="go('s-upload')">‹</button>
     <div class="pad" style="padding:72px 24px 8px"><div class="tag">Step 2 of 3</div>
       <h1 class="serif" style="font-size:30px;margin:10px 0 4px">Where to today?</h1>
-      <p style="color:var(--muted);font-size:14px">Tap a scene — we'll style your pet right in.</p></div>
+      <p style="color:var(--muted);font-size:14px">Tap a scene — we'll style your pet right in.</p>
+      <input id="sceneSearch" oninput="filterScenes(this.value)" placeholder="Search 400+ scenes — warrior, hanfu, astronaut, Van Gogh…" style="width:100%;margin-top:12px;padding:12px 14px;border:1px solid #e6e0d6;border-radius:12px;font-size:14px;font-family:inherit;background:#fff"></div>
     <div class="grid" id="grid"></div>
   </section>
 
@@ -218,16 +222,16 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.7;marg
   <div class="err" id="errBox"></div>
 </div>
 <script>
-const SCENES=[
- {id:'jet',name:'Private Jet',hot:'🔥 #1',img:'assets/pet/dog01.jpg'},
- {id:'yacht',name:'Yacht Deck',hot:'Trending',img:'assets/pet/dog02.jpg'},
- {id:'michelin',name:'Michelin Dinner',hot:'🔥 Hot',img:'assets/pet/dog03.jpg'},
- {id:'redcarpet',name:'Red Carpet',hot:'New',img:'assets/pet/dog04.jpg'},
- {id:'ski',name:'Ski Resort',hot:'Trending',img:'assets/pet/dog05.jpg'},
- {id:'money',name:'Make It Rain',hot:'🔥 Viral',img:'assets/pet/dog06.jpg'},
- {id:'podium',name:'Champion Podium',hot:'New',img:'assets/pet/dog07.jpg'},
- {id:'tennis',name:'Tennis Star',hot:'New',img:'assets/pet/dog08.jpg'},
-];
+// 462-scene library loaded from scenes.json (merged from ai-pet). Only scenes with a thumbnail are shown.
+let SCENES=[];
+let sceneFilter='';
+async function loadScenes(){
+  try{
+    const r=await fetch('scenes.json',{cache:'no-cache'}); const all=await r.json();
+    SCENES=all.filter(s=>s && s.img);           // show only ones that have a thumbnail
+    renderScenes();
+  }catch(e){ console.error('scenes load failed',e); }
+}
 let picked=null;
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function gate(){document.getElementById('gateBtn').disabled=!(c1.checked&&c2.checked);}
@@ -250,7 +254,19 @@ document.getElementById('file').addEventListener('change',function(ev){
   rd.readAsDataURL(f);
 });
 
-function renderScenes(){grid.innerHTML=SCENES.map(s=>`<div class="card" onclick="choose('${s.id}',this)"><img src="${s.img}"><span class="fire${/🔥/.test(s.hot)?' top':''}">${s.hot}</span><div class="info"><h3>${s.name}</h3></div></div>`).join('');}
+function esc(t){return String(t).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function cardHtml(s){const badge=s.hot?'🔥':'';return `<div class="card" onclick="choose('${s.id}',this)"><img loading="lazy" src="${s.img}">${badge?`<span class="fire top">${badge}</span>`:''}<div class="info"><h3>${esc(s.name)}</h3></div></div>`;}
+function renderScenes(){
+  const q=sceneFilter.trim().toLowerCase();
+  const list=q?SCENES.filter(s=>s.name.toLowerCase().includes(q)||(s.category||'').toLowerCase().includes(q)):SCENES;
+  if(!list.length){grid.innerHTML='<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:24px">No scenes match “'+esc(sceneFilter)+'”.</p>';return;}
+  if(q){grid.innerHTML=list.map(cardHtml).join('');return;}
+  // group by category
+  const cats=[]; const byCat={};
+  list.forEach(s=>{const c=s.category||'Styles'; if(!byCat[c]){byCat[c]=[];cats.push(c);} byCat[c].push(s);});
+  grid.innerHTML=cats.map(c=>`<div class="cat-head">${esc(c)} <span>${byCat[c].length}</span></div>`+byCat[c].map(cardHtml).join('')).join('');
+}
+function filterScenes(v){sceneFilter=v;renderScenes();}
 function choose(id,el){picked=SCENES.find(x=>x.id===id);document.querySelectorAll('.card').forEach(c=>c.classList.remove('sel'));el&&el.classList.add('sel');
   document.getElementById('pwImg').src=picked.img;document.getElementById('pwScene').textContent=picked.name;
   if(localStorage.getItem('fp_paidOrder')){runGenerate();} else {go('s-paywall');}
@@ -410,5 +426,5 @@ async function shareVid(btn){
   btn.textContent=old;
 }
 
-renderScenes(); checkPaidThenGen();
+loadScenes(); checkPaidThenGen();
 </script></body></html>
