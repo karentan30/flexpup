@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FlexPup Picks — Best-sellers matched to your pet</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1712;--muted:#8a8175;--gold:#c6a15b;--soft:#f3efe7;--line:#e7e0d4;--shadow:0 10px 30px rgba(20,16,11,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:#faf7f1;color:var(--ink);-webkit-font-smoothing:antialiased}
+.serif{font-family:Fraunces,serif}
+.wrap{max-width:520px;margin:0 auto;padding:22px 22px 60px}
+.tag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}
+h1{font-family:Fraunces,serif;font-size:28px;margin:8px 0 4px}
+p.lede{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:16px}
+label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:14px 0 6px}
+input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:15px;background:#fff}
+.colors{display:flex;flex-wrap:wrap;gap:8px}
+.sw{width:38px;height:38px;border-radius:10px;border:2px solid transparent;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.sw.sel{border-color:var(--ink)}
+.btn{width:100%;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,#d7b268,#a37a34);color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin-top:20px;font-family:inherit}
+.sizecard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:16px 0;box-shadow:var(--shadow)}
+.sizecard b{font-size:20px;color:var(--gold)}
+.cat{margin-top:22px}
+.cat h3{font-family:Fraunces,serif;font-size:19px;margin-bottom:2px}
+.cat .why{font-size:12px;color:var(--muted);margin-bottom:10px}
+.item{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
+.item .em{font-size:26px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--soft);border-radius:10px;flex:0 0 auto}
+.item .nm{font-weight:600;font-size:14px}.item .sub{font-size:12px;color:var(--muted)}
+.item a{margin-left:auto;background:var(--ink);color:#fff;text-decoration:none;font-weight:700;font-size:12px;padding:9px 14px;border-radius:999px;white-space:nowrap}
+.disc{font-size:11px;color:var(--muted);margin-top:20px;line-height:1.5;border-top:1px solid var(--line);padding-top:14px}
+</style></head>
+<body><div class="wrap">
+<div class="tag">FlexPup Picks · best-sellers for your pet</div>
+<h1 class="serif">What actually fits your pet</h1>
+<p class="lede">Tell us your pet's size and coat color — we'll match best-selling gear that fits and looks great on them.</p>
+
+<div id="form">
+  <label>Pet weight</label>
+  <div style="display:flex;gap:10px"><input id="wt" type="number" min="1" max="200" placeholder="e.g. 12" style="flex:2"><select id="wunit" style="flex:1"><option value="lb">lb</option><option value="kg">kg</option></select></div>
+  <label>Coat color</label>
+  <div class="colors" id="colors"></div>
+  <label>Pet type</label>
+  <select id="ptype"><option value="dog">Dog</option><option value="cat">Cat</option></select>
+  <button class="btn" onclick="recommend()">Show my pet's picks →</button>
+</div>
+
+<div id="out"></div>
+</div>
+
+<script>
+var TAG='fabulousslim-20';
+var COLORS=[['white','#f5f2ea'],['cream','#efe3c8'],['golden','#d9a441'],['tan','#c8a06a'],['brown','#7a4f2a'],['black','#2a2622'],['grey','#9a958c'],['red/ginger','#b5622f'],['brindle','#6b4a2e'],['tricolor','#8a6b45'],['spotted','#cfc6ba']];
+var sel=null;
+document.getElementById('colors').innerHTML=COLORS.map((c,i)=>`<div class="sw" style="background:${c[1]}" title="${c[0]}" onclick="pickColor(${i},this)"></div>`).join('');
+function pickColor(i,el){sel=COLORS[i][0];document.querySelectorAll('.sw').forEach(s=>s.classList.remove('sel'));el.classList.add('sel');}
+
+// weight(lb) -> apparel size + harness band
+function sizeFor(lb){
+  if(lb<8)  return {sz:'XS', band:'8–12" neck', note:'toy/tiny'};
+  if(lb<15) return {sz:'S',  band:'10–14" neck', note:'small'};
+  if(lb<30) return {sz:'M',  band:'14–18" neck', note:'medium'};
+  if(lb<55) return {sz:'L',  band:'16–22" neck', note:'large'};
+  if(lb<80) return {sz:'XL', band:'20–26" neck', note:'x-large'};
+  return {sz:'XXL', band:'24–30" neck', note:'giant'};
+}
+// color -> accessory color that pops on that coat
+var COLORMATCH={white:'red or teal',cream:'dusty blue or coral',golden:'navy or forest green',tan:'burgundy or teal',brown:'mustard or cream',black:'red, gold or bright teal',grey:'blush pink or mustard',['red/ginger']:'teal or denim blue',brindle:'orange or teal',tricolor:'red or navy',spotted:'black or red'};
+
+function A(query){return 'https://www.amazon.com/s?k='+encodeURIComponent(query)+'&tag='+TAG;}
+
+function recommend(){
+  var wt=parseFloat(document.getElementById('wt').value);
+  if(!wt||wt<=0){alert('Enter your pet\'s weight.');return;}
+  if(document.getElementById('wunit').value==='kg')wt=wt*2.205;
+  if(!sel){alert('Pick your pet\'s coat color.');return;}
+  var pt=document.getElementById('ptype').value;
+  var s=sizeFor(wt); var pop=COLORMATCH[sel]||'red or teal';
+  var cats=[
+    {h:'👕 Clothes & Sweaters',why:'Size <b>'+s.sz+'</b> · '+pop+' pops on a '+sel+' coat',items:[
+      {em:'🧥',nm:pt+' sweater ('+s.sz+')',sub:'cozy · best-seller',q:pt+' sweater size '+s.sz+' '+pop.split(' ')[0]},
+      {em:'🌧️',nm:'Rain / winter coat',sub:'waterproof',q:pt+' waterproof coat size '+s.sz},
+      {em:'🎽',nm:'Cute costume outfit',sub:'photo-ready',q:pt+' costume outfit size '+s.sz},
+    ]},
+    {h:'🦮 Harness, Collar & Leash',why:'Fit: '+s.band+' · matched color '+pop,items:[
+      {em:'🦺',nm:'No-pull harness ('+s.sz+')',sub:'top-rated',q:'no pull '+pt+' harness size '+s.sz+' '+pop.split(' ')[0]},
+      {em:'📿',nm:'Collar + leash set',sub:pop+' · best-seller',q:pt+' collar leash set '+pop.split(' ')[0]},
+      {em:'🏷️',nm:'Personalized name tag',sub:'engraved',q:'personalized '+pt+' name tag engraved'},
+    ]},
+    {h:'🛏️ Comfort & Home',why:'Sized for a '+s.note+' pet',items:[
+      {em:'🛏️',nm:'Orthopedic bed ('+(wt<25?'S/M':wt<55?'L':'XL')+')',sub:'best-seller',q:'orthopedic '+pt+' bed '+(wt<25?'medium':'large')},
+      {em:'🧺',nm:'Calming donut bed',sub:'cozy',q:'calming '+pt+' bed donut'},
+    ]},
+    {h:'🎾 Toys & Treats',why:'Crowd-favorites',items:[
+      {em:'🦴',nm:'Durable chew toy',sub:'tough',q:'durable '+pt+' chew toy'},
+      {em:'🧩',nm:'Puzzle / snuffle feeder',sub:'enrichment',q:pt+' puzzle snuffle feeder'},
+      {em:'🍖',nm:'Healthy treat variety',sub:'best-seller',q:'healthy '+pt+' treats variety'},
+    ]},
+  ];
+  var html='<div class="sizecard">Your pet ≈ <b>'+Math.round(wt)+' lb</b> → apparel size <b>'+s.sz+'</b> · '+s.band+'<br><span style="color:var(--muted);font-size:13px">Best accessory colors on a '+sel+' coat: <b>'+pop+'</b></span></div>';
+  cats.forEach(function(c){
+    html+='<div class="cat"><h3>'+c.h+'</h3><div class="why">'+c.why+'</div>'+
+      c.items.map(function(it){return '<div class="item"><div class="em">'+it.em+'</div><div><div class="nm">'+it.nm+'</div><div class="sub">'+it.sub+'</div></div><a href="'+A(it.q)+'" target="_blank" rel="nofollow sponsored noopener">Shop →</a></div>';}).join('')+'</div>';
+  });
+  html+='<div class="disc">As an Amazon Associate, FlexPup earns from qualifying purchases. Picks are matched by size &amp; color; check the retailer\'s size chart before buying.</div>';
+  document.getElementById('form').style.display='none';
+  document.getElementById('out').innerHTML=html;window.scrollTo(0,0);
+}
+</script>
+</body></html>
