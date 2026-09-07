@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>FlexPup — your pet, living the 1% life</title>
+<title>FlexPup · AI Pet Studio — your pet, living the 1% life</title>
 <script>
 // PostHog + 达人ref归因(填 PH key 才启用·惰性安全)
 !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -16,141 +16,182 @@
   window.track=function(ev,props){try{if(PH_KEY.slice(0,4)==='phc_')posthog.capture(ev,Object.assign({ref:ref},props||{}))}catch(e){}};
 })();
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--cream:#f7f3ec;--ink:#1c1b19;--gold:#c8a45c;--muted:#8a8377;--line:#e4dccf;--soft:#efe7db}
+:root{
+  --cream:#f8f5ef;--ink:#161513;--gold:#c19a4f;--gold-2:#a37a34;--muted:#93897a;
+  --line:#e8e0d2;--soft:#f0e9dd;--paper:#fffdf9;
+  --shadow-sm:0 1px 2px rgba(70,55,25,.05),0 2px 8px rgba(70,55,25,.04);
+  --shadow-md:0 4px 14px rgba(90,70,30,.08),0 10px 30px rgba(90,70,30,.06);
+  --shadow-lg:0 18px 50px rgba(90,70,30,.18);
+  --r:18px;--ease:cubic-bezier(.22,.61,.36,1)
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{background:#e9e3d8;font-family:-apple-system,"Segoe UI",Roboto,"PingFang SC",sans-serif;color:var(--ink)}
-.app{max-width:440px;margin:0 auto;min-height:100vh;background:var(--cream);position:relative;overflow:hidden}
-.serif{font-family:"Playfair Display",Georgia,serif}
-.screen{display:none;min-height:100vh;animation:fade .4s ease}.screen.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.btn{display:block;width:100%;padding:16px;border:none;border-radius:40px;font-size:16px;font-weight:700;background:var(--ink);color:var(--cream);cursor:pointer;letter-spacing:.3px}
-.btn:active{transform:scale(.98)}.btn.gold{background:linear-gradient(100deg,#d0ab5f,#a9853f);color:#fff}
-.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}.btn:disabled{opacity:.35}
-.pad{padding:22px}.tag{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);font-weight:700}
-small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.6;margin-top:14px}
-.back{position:absolute;top:16px;left:16px;z-index:9;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.85);border:1px solid var(--line);font-size:18px;cursor:pointer}
-.hero{position:relative;height:60vh;min-height:420px;overflow:hidden}
-.hero img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
-.hero .grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,18,15,.85) 8%,rgba(20,18,15,.1) 55%,transparent)}
-.hero .cap{position:absolute;left:0;right:0;bottom:24px;padding:0 24px;color:#fff}
-.hero .cap h1{font-size:38px;line-height:1.05;font-weight:800}.hero .cap p{margin-top:12px;font-size:15px;opacity:.92}
-.brandbar{display:flex;align-items:center;justify-content:space-between;padding:16px 22px}
-.brand{font-size:20px;font-weight:800;letter-spacing:1px}.brand b{color:var(--gold)}
-.aha{display:flex;gap:10px;padding:18px 22px 6px}.aha .ba{flex:1;border-radius:14px;overflow:hidden;position:relative;aspect-ratio:1;background:var(--soft)}
-.aha .ba img{width:100%;height:100%;object-fit:cover}.aha .ba span{position:absolute;top:8px;left:8px;font-size:10px;font-weight:700;background:rgba(0,0,0,.6);color:#fff;padding:3px 8px;border-radius:20px}
-.arrow{align-self:center;font-size:22px;color:var(--gold)}
-.check{display:flex;gap:12px;align-items:flex-start;padding:15px;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;background:#fff;cursor:pointer}
-.check input{width:22px;height:22px;margin-top:1px;accent-color:var(--gold);flex-shrink:0}.check div{font-size:13px;line-height:1.5;color:#4a463f}.check b{color:var(--ink)}
-.drop{border:2px dashed var(--line);border-radius:20px;padding:30px 20px;text-align:center;background:#fff;margin:8px 0 16px;cursor:pointer}
-.drop .ring{width:96px;height:96px;border-radius:50%;margin:0 auto 14px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden}
-.tips{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:13px;color:#4a463f;line-height:1.9}.tips b{color:var(--ink)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 22px 22px}
-.card{border-radius:16px;overflow:hidden;position:relative;aspect-ratio:3/4;background:var(--soft);cursor:pointer;border:2.5px solid transparent}.card.sel{border-color:var(--gold)}
-.card img{width:100%;height:100%;object-fit:cover}.card .info{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff}
-.card .info h3{font-size:14px;font-weight:700}.card .fire{position:absolute;top:8px;left:8px;font-size:11px;background:rgba(200,164,92,.95);color:#fff;padding:3px 8px;border-radius:20px;font-weight:700}
-.genwrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center}
-.genpreview{width:210px;aspect-ratio:3/4;border-radius:20px;overflow:hidden;position:relative;margin-bottom:26px;box-shadow:0 14px 40px rgba(120,100,60,.25);background:var(--soft)}
-.genpreview img{width:100%;height:100%;object-fit:cover;filter:blur(9px) brightness(.9);transform:scale(1.08)}
-.genpreview .shimmer{position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);background-size:220% 100%;animation:shim 1.5s linear infinite}
+html,body{background:#ece5d9;font-family:"Inter",-apple-system,"Segoe UI",Roboto,"PingFang SC",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.app{max-width:440px;margin:0 auto;min-height:100vh;background:var(--cream);position:relative;overflow:hidden;box-shadow:0 0 60px rgba(60,45,20,.10)}
+.serif{font-family:"Playfair Display",Georgia,serif;letter-spacing:-.01em}
+.screen{display:none;min-height:100vh;animation:fade .5s var(--ease)}.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.btn{display:block;width:100%;padding:17px;border:none;border-radius:100px;font-size:16px;font-weight:700;font-family:inherit;background:var(--ink);color:var(--cream);cursor:pointer;letter-spacing:.2px;box-shadow:var(--shadow-sm);transition:transform .18s var(--ease),box-shadow .18s var(--ease),opacity .18s}
+.btn:active{transform:scale(.975)}
+.btn.gold{background:linear-gradient(135deg,#d7b268 0%,#c19a4f 45%,#a37a34 100%);color:#fff;box-shadow:0 6px 18px rgba(170,130,55,.34),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn.gold:active{box-shadow:0 3px 10px rgba(170,130,55,.28),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid rgba(22,21,19,.18);box-shadow:none;font-weight:600}
+.btn:disabled{opacity:.32;box-shadow:none}
+.pad{padding:24px}
+.tag{font-size:10.5px;letter-spacing:2.6px;text-transform:uppercase;color:var(--gold);font-weight:700}
+small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.7;margin-top:16px;letter-spacing:.1px}
+.back{position:absolute;top:18px;left:18px;z-index:9;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);font-size:20px;line-height:1;color:var(--ink);cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .18s var(--ease)}
+.back:active{transform:scale(.92)}
+.hero{position:relative;height:62vh;min-height:440px;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover;object-position:50% 38%}
+.hero .grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(16,14,11,.92) 4%,rgba(16,14,11,.35) 42%,rgba(16,14,11,.05) 70%,transparent)}
+.hero .cap{position:absolute;left:0;right:0;bottom:26px;padding:0 26px;color:#fff}
+.hero .cap h1{font-size:41px;line-height:1.02;font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 20px rgba(0,0,0,.28)}
+.hero .cap p{margin-top:14px;font-size:15px;line-height:1.5;opacity:.9;max-width:92%;font-weight:400}
+.brandbar{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px}
+.brand{display:inline-flex;align-items:center;gap:9px;font-family:"Playfair Display",serif;font-size:22px;font-weight:800;letter-spacing:.02em}
+.brand .mk{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#d7b268,#a37a34);color:#fff;font-size:15px;box-shadow:0 3px 8px rgba(170,130,55,.35),inset 0 1px 0 rgba(255,255,255,.4)}
+.brand b{color:var(--gold);font-weight:800}
+.brandpill{font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);font-weight:700;border:1px solid var(--line);padding:5px 11px;border-radius:100px;background:var(--paper)}
+.aha{display:flex;gap:12px;padding:22px 24px 8px;align-items:center}
+.aha .ba{flex:1;border-radius:16px;overflow:hidden;position:relative;aspect-ratio:1;background:var(--soft);box-shadow:var(--shadow-md)}
+.aha .ba img{width:100%;height:100%;object-fit:cover}
+.aha .ba span{position:absolute;top:9px;left:9px;font-size:9px;letter-spacing:1.2px;font-weight:700;background:rgba(16,14,11,.62);backdrop-filter:blur(6px);color:#fff;padding:4px 9px;border-radius:100px}
+.aha .ba.after span{background:linear-gradient(135deg,#d7b268,#a37a34)}
+.arrow{flex:0 0 auto;font-size:18px;color:var(--gold);font-weight:700}
+.check{display:flex;gap:13px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:16px;margin-bottom:12px;background:var(--paper);cursor:pointer;box-shadow:var(--shadow-sm);transition:border-color .18s,transform .12s var(--ease)}
+.check:active{transform:scale(.99)}
+.check input{width:22px;height:22px;margin-top:1px;accent-color:var(--gold);flex-shrink:0}
+.check div{font-size:13px;line-height:1.55;color:#544e44}.check b{color:var(--ink);font-weight:700}
+.drop{border:1.5px dashed #d8ceba;border-radius:22px;padding:34px 20px;text-align:center;background:var(--paper);margin:10px 0 18px;cursor:pointer;box-shadow:var(--shadow-sm);transition:border-color .2s,background .2s}
+.drop:active{border-color:var(--gold);background:#fffbf3}
+.drop .ring{width:100px;height:100px;border-radius:50%;margin:0 auto 16px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.tips{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;font-size:13px;color:#544e44;line-height:2;box-shadow:var(--shadow-sm)}.tips b{color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:6px 24px 26px}
+.card{border-radius:18px;overflow:hidden;position:relative;aspect-ratio:3/4;background:var(--soft);cursor:pointer;border:2.5px solid transparent;box-shadow:var(--shadow-md);transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.card:active{transform:scale(.975)}
+.card.sel{border-color:var(--gold);box-shadow:0 0 0 3px rgba(193,154,79,.22),var(--shadow-md)}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.card.sel img{transform:scale(1.04)}
+.card .info{position:absolute;left:0;right:0;bottom:0;padding:14px 13px 12px;background:linear-gradient(transparent,rgba(12,10,8,.82));color:#fff}
+.card .info h3{font-size:14px;font-weight:700;letter-spacing:.1px}
+.card .fire{position:absolute;top:9px;left:9px;font-size:10px;letter-spacing:.3px;background:rgba(16,14,11,.55);backdrop-filter:blur(6px);color:#fff;padding:4px 9px;border-radius:100px;font-weight:700}
+.card .fire.top{background:linear-gradient(135deg,#d7b268,#a37a34)}
+.genwrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:34px;text-align:center}
+.genpreview{width:216px;aspect-ratio:3/4;border-radius:22px;overflow:hidden;position:relative;margin-bottom:28px;box-shadow:var(--shadow-lg);background:var(--soft)}
+.genpreview img{width:100%;height:100%;object-fit:cover;filter:blur(10px) brightness(.92);transform:scale(1.1)}
+.genpreview .shimmer{position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);background-size:220% 100%;animation:shim 1.6s linear infinite}
 @keyframes shim{from{background-position:120% 0}to{background-position:-120% 0}}
-.genwrap h2{font-size:23px;font-weight:800;margin-bottom:8px}.genwrap p{color:var(--muted);font-size:14px;min-height:20px}
-.progline{height:6px;width:70%;background:var(--soft);border-radius:6px;margin:22px auto 18px;overflow:hidden}.progline i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d0ab5f,#a9853f);transition:width .35s}
-.genstrip{font-size:12px;color:var(--gold);font-weight:700;background:#fff;border:1px solid var(--line);padding:8px 16px;border-radius:20px}
-.result-img{position:relative;background:#000}.result-img img{width:100%;display:block}
-.wm{position:absolute;right:12px;bottom:12px;font-size:12px;font-weight:800;color:#fff;letter-spacing:1px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
-.ailbl{position:absolute;left:12px;top:12px;font-size:10px;background:rgba(0,0,0,.55);color:#fff;padding:4px 9px;border-radius:20px}
-.paywall{margin:16px 22px 0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}
-.paywall .price{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}.paywall .price b{font-size:32px}.paywall .price s{color:var(--muted);font-size:15px}
-.paywall ul{list-style:none;margin:12px 0 16px;font-size:13.5px;color:#4a463f}.paywall li{padding:5px 0 5px 24px;position:relative}.paywall li:before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:800}
-.pwprev{display:flex;gap:12px;align-items:center;margin-bottom:16px}
-.pwprev img{width:64px;height:64px;border-radius:12px;object-fit:cover;border:1px solid var(--line)}
-.row2{display:flex;gap:10px;padding:14px 22px 30px}.row2 .btn{padding:14px;font-size:14px}
-.sharewrap{padding:64px 22px 22px}.sc{background:var(--soft);border-radius:22px;overflow:hidden;box-shadow:0 12px 40px rgba(120,100,60,.18);border:1px solid var(--line)}
-.sc-imgs{display:flex}.sc-imgs div{flex:1;position:relative;aspect-ratio:3/4;overflow:hidden}.sc-imgs img{width:100%;height:100%;object-fit:cover}
-.sc-imgs div span{position:absolute;top:8px;left:8px;font-size:10px;font-weight:700;background:rgba(0,0,0,.6);color:#fff;padding:3px 8px;border-radius:16px}
-.sc-foot{padding:14px 16px;display:flex;align-items:center;justify-content:space-between}.sc-foot .h{font-weight:800}.sc-foot .h b{color:var(--gold)}.sc-foot .ai{font-size:10px;color:var(--muted)}
-.qr{width:40px;height:40px;background:repeating-linear-gradient(0deg,#222 0 4px,transparent 4px 8px),repeating-linear-gradient(90deg,#222 0 4px,transparent 4px 8px);background-size:8px 8px;border-radius:8px}
-.hint{text-align:center;font-size:12px;color:var(--muted);padding:10px 22px}
-.wmrow{display:flex;gap:10px;align-items:center;margin:14px 22px 0;font-size:13px;color:#4a463f;cursor:pointer}
+.genwrap h2{font-size:24px;font-weight:800;margin-bottom:9px;letter-spacing:-.01em}
+.genwrap p{color:var(--muted);font-size:14px;min-height:20px}
+.progline{height:6px;width:72%;background:var(--soft);border-radius:100px;margin:24px auto 18px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}
+.progline i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d7b268,#a37a34);border-radius:100px;transition:width .35s}
+.genstrip{font-size:12px;color:var(--gold-2);font-weight:700;background:var(--paper);border:1px solid var(--line);padding:9px 17px;border-radius:100px;box-shadow:var(--shadow-sm)}
+.result-img{position:relative;background:#000;overflow:hidden}.result-img img{width:100%;display:block}
+.wm{position:absolute;right:14px;bottom:14px;font-size:12px;font-weight:800;color:#fff;letter-spacing:.6px;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.ailbl{position:absolute;left:14px;top:14px;font-size:10px;letter-spacing:.4px;background:rgba(16,14,11,.5);backdrop-filter:blur(8px);color:#fff;padding:5px 11px;border-radius:100px;font-weight:600}
+.paywall{margin:18px 24px 0;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow-md)}
+.paywall .price{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.paywall .price b{font-size:36px;font-weight:800;letter-spacing:-.02em}.paywall .price s{color:var(--muted);font-size:15px}
+.paywall .price span{color:var(--gold-2);font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;background:rgba(193,154,79,.12);padding:3px 9px;border-radius:100px}
+.paywall ul{list-style:none;margin:14px 0 18px;font-size:14px;color:#544e44}
+.paywall li{padding:6px 0 6px 26px;position:relative;line-height:1.4}
+.paywall li:before{content:"";position:absolute;left:0;top:8px;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#d7b268,#a37a34)}
+.paywall li:after{content:"✓";position:absolute;left:4px;top:6px;color:#fff;font-weight:800;font-size:10px}
+.pwprev{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+.pwprev img{width:70px;height:70px;border-radius:16px;object-fit:cover;box-shadow:var(--shadow-sm)}
+.row2{display:flex;gap:12px;padding:16px 24px 32px}.row2 .btn{padding:15px;font-size:15px}
+.sharewrap{padding:68px 24px 24px}
+.sc{background:var(--paper);border-radius:24px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--line)}
+.sc-imgs{display:flex;gap:2px}.sc-imgs div{flex:1;position:relative;aspect-ratio:3/4;overflow:hidden}.sc-imgs img{width:100%;height:100%;object-fit:cover}
+.sc-imgs div span{position:absolute;top:9px;left:9px;font-size:9px;letter-spacing:1px;font-weight:700;background:rgba(16,14,11,.6);backdrop-filter:blur(6px);color:#fff;padding:4px 9px;border-radius:100px}
+.sc-foot{padding:16px 18px;display:flex;align-items:center;justify-content:space-between}
+.sc-foot .h{font-family:"Playfair Display",serif;font-weight:800;font-size:16px}.sc-foot .h b{color:var(--gold)}.sc-foot .ai{font-size:10px;color:var(--muted);margin-top:2px}
+.qr{width:44px;height:44px;background:repeating-linear-gradient(0deg,#222 0 4px,transparent 4px 8px),repeating-linear-gradient(90deg,#222 0 4px,transparent 4px 8px);background-size:8px 8px;border-radius:9px}
+.hint{text-align:center;font-size:12px;color:var(--muted);padding:12px 24px}
+.wmrow{display:flex;gap:11px;align-items:center;margin:16px 24px 0;font-size:13px;color:#544e44;cursor:pointer;line-height:1.4}
 .wmrow input{width:20px;height:20px;accent-color:var(--gold);flex-shrink:0}
-.gallery{padding:6px 0 4px}.gallery h4{font-size:12px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;font-weight:800;padding:0 22px 8px}
-.gstrip{display:flex;gap:10px;overflow-x:auto;padding:0 22px 6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.gallery{padding:10px 0 4px}
+.gallery h4{font-size:11px;letter-spacing:1.8px;color:var(--muted);text-transform:uppercase;font-weight:700;padding:0 24px 12px;display:flex;align-items:center;gap:8px}
+.gallery h4:before,.gallery h4:after{content:"";flex:1;height:1px;background:var(--line)}
+.gstrip{display:flex;gap:12px;overflow-x:auto;padding:0 24px 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-type:x mandatory}
 .gstrip::-webkit-scrollbar{display:none}
-.gstrip img{width:118px;height:158px;object-fit:cover;border-radius:14px;flex-shrink:0;border:1px solid var(--line)}
-.err{background:#fbeaea;border:1px solid #e7c3c3;color:#a33;font-size:13px;padding:10px 14px;border-radius:12px;margin:0 22px 12px;display:none}
+.gstrip img{width:126px;height:168px;object-fit:cover;border-radius:16px;flex-shrink:0;box-shadow:var(--shadow-md);scroll-snap-align:start}
+.err{background:#fcedec;border:1px solid #edcac7;color:#a3382f;font-size:13px;padding:12px 16px;border-radius:14px;margin:0 24px 12px;display:none;box-shadow:var(--shadow-sm)}
 </style></head>
 <body><div class="app">
 <input type="file" id="file" accept="image/*" hidden>
 
   <section class="screen active" id="s-landing">
-    <div class="brandbar"><div class="brand">FLEX<b>PUP</b> 🐾</div><div class="tag">Your pet, the 1%</div></div>
+    <div class="brandbar"><div class="brand"><span class="mk">🐾</span>Flex<b>Pup</b></div><div class="brandpill">The 1% life</div></div>
     <div class="hero"><img src="assets/pet/dog01.jpg" alt=""><div class="grad"></div>
-      <div class="cap"><div class="tag" style="color:#e7cf95">Fake it till they make it</div>
+      <div class="cap"><div class="tag" style="color:#e7cf95">AI Pet Studio</div>
         <h1 class="serif">Your pet deserves<br>the yacht life.</h1>
-        <p>One photo of your dog, cat or bunny → private jets, red carpets, Michelin dinners.</p></div></div>
-    <div class="aha"><div class="ba"><span>THEM</span><img src="assets/pet/petface.jpg"></div><div class="arrow">→</div><div class="ba"><span>FLEXPUP</span><img src="assets/pet/dog03.jpg"></div></div>
-    <div class="pad" style="padding-top:8px"><button class="btn gold" onclick="go('s-gate')">Start →</button>
-      <small class="legal">AI-generated · your pet only · $2.99 for 4 photos.</small></div>
+        <p>One photo → private jets, red carpets and Michelin dinners. Dogs, cats &amp; bunnies welcome.</p></div></div>
+    <div class="aha"><div class="ba"><span>Before</span><img src="assets/pet/petface.jpg"></div><div class="arrow">→</div><div class="ba after"><span>FlexPup</span><img src="assets/pet/dog03.jpg"></div></div>
+    <div class="pad" style="padding-top:10px"><button class="btn gold" onclick="go('s-gate')">Start the shoot</button>
+      <small class="legal">AI-generated · your pet only · $2.99 for a pack of 4.</small></div>
     <div class="gallery">
-      <h4>🐾 30+ luxury scenes · fresh drops weekly</h4>
+      <h4>30+ luxury scenes · new drops weekly</h4>
       <div class="gstrip">
-        <img src="assets/pet/dog01.jpg"><img src="assets/pet/show_dog19.jpg"><img src="assets/pet/dog03.jpg">
-        <img src="assets/pet/show_dog13.jpg"><img src="assets/pet/dog06.jpg"><img src="assets/pet/show_dog20.jpg">
-        <img src="assets/pet/dog04.jpg"><img src="assets/pet/show_dog09.jpg"><img src="assets/pet/dog07.jpg">
-        <img src="assets/pet/show_dog18.jpg"><img src="assets/pet/dog02.jpg"><img src="assets/pet/show_dog15.jpg">
+        <img src="assets/pet/show_dog19.jpg"><img src="assets/pet/dog05.jpg"><img src="assets/pet/show_dog13.jpg">
+        <img src="assets/pet/dog06.jpg"><img src="assets/pet/show_dog20.jpg"><img src="assets/pet/dog04.jpg">
+        <img src="assets/pet/show_dog09.jpg"><img src="assets/pet/dog07.jpg"><img src="assets/pet/show_dog18.jpg">
+        <img src="assets/pet/dog02.jpg"><img src="assets/pet/show_dog17.jpg"><img src="assets/pet/show_dog03.jpg">
       </div>
     </div>
-    <div class="pad" style="padding-top:4px"><button class="btn gold" onclick="go('s-gate')">Make my pet a star →</button></div>
+    <div class="pad" style="padding-top:4px"><button class="btn gold" onclick="go('s-gate')">Make my pet a star</button></div>
   </section>
 
   <section class="screen" id="s-gate"><button class="back" onclick="go('s-landing')">‹</button>
-    <div class="pad" style="padding-top:70px"><div class="tag">Quick check</div>
-      <h1 class="serif" style="font-size:28px;margin:8px 0 20px">Just one thing</h1>
-      <label class="check"><input type="checkbox" id="c1" onchange="gate()"><div><b>This is my pet</b> (or a photo I may use). No people's faces.</div></label>
-      <label class="check"><input type="checkbox" id="c2" onchange="gate()"><div>Images are <b>AI-generated & labeled</b> as such.</div></label>
+    <div class="pad" style="padding-top:72px"><div class="tag">Quick check</div>
+      <h1 class="serif" style="font-size:30px;margin:10px 0 22px">Two quick things</h1>
+      <label class="check"><input type="checkbox" id="c1" onchange="gate()"><div><b>This is my pet</b> (or a photo I may use) — no human faces.</div></label>
+      <label class="check"><input type="checkbox" id="c2" onchange="gate()"><div>I understand results are <b>AI-generated &amp; labeled</b> as such.</div></label>
       <button class="btn" id="gateBtn" disabled onclick="go('s-upload')">Continue</button>
-      <small class="legal">Pets only — no face-data collected. See Privacy & Terms.</small></div>
+      <small class="legal">Pets only — no face-data collected. See Privacy &amp; Terms.</small></div>
   </section>
 
   <section class="screen" id="s-upload"><button class="back" onclick="go('s-gate')">‹</button>
-    <div class="pad" style="padding-top:70px"><div class="tag">Step 1</div>
-      <h1 class="serif" style="font-size:28px;margin:8px 0 4px">Upload your pet</h1>
-      <p style="color:var(--muted);font-size:14px;margin-bottom:14px">A clear, front-on shot works best.</p>
+    <div class="pad" style="padding-top:72px"><div class="tag">Step 1 of 3</div>
+      <h1 class="serif" style="font-size:30px;margin:10px 0 6px">Upload your pet</h1>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:16px">A clear, front-on portrait works best.</p>
       <div class="drop" onclick="document.getElementById('file').click()"><div class="ring" id="ring">🐶</div>
-        <div style="font-weight:700" id="upTxt">Tap to upload a photo</div><div style="font-size:12px;color:var(--muted);margin-top:4px" id="upSub">Face clear · good light</div></div>
-      <div class="tips"><b>Best results:</b><br>✓ Pet facing camera &nbsp; ✓ Face large & sharp<br>✓ Even light &nbsp; ✗ Blurry / far away</div>
-      <button class="btn" id="upBtn" disabled style="margin-top:16px" onclick="go('s-scenes')">Pick a scene →</button></div>
+        <div style="font-weight:700" id="upTxt">Tap to add a photo</div><div style="font-size:12px;color:var(--muted);margin-top:5px" id="upSub">Face clear · good light</div></div>
+      <div class="tips"><b>For the best shot</b><br>✓ Facing the camera &nbsp; ✓ Face large &amp; sharp<br>✓ Soft, even light &nbsp; ✗ Blurry or far away</div>
+      <button class="btn" id="upBtn" disabled style="margin-top:18px" onclick="go('s-scenes')">Choose a scene</button></div>
   </section>
 
   <section class="screen" id="s-scenes"><button class="back" onclick="go('s-upload')">‹</button>
-    <div class="pad" style="padding:70px 22px 6px"><div class="tag">Step 2</div>
-      <h1 class="serif" style="font-size:28px;margin:8px 0 2px">Where to?</h1>
-      <p style="color:var(--muted);font-size:14px">Pick a scene → unlock → we generate yours.</p></div>
+    <div class="pad" style="padding:72px 24px 8px"><div class="tag">Step 2 of 3</div>
+      <h1 class="serif" style="font-size:30px;margin:10px 0 4px">Where to today?</h1>
+      <p style="color:var(--muted);font-size:14px">Tap a scene — we'll style your pet right in.</p></div>
     <div class="grid" id="grid"></div>
   </section>
 
   <section class="screen" id="s-paywall"><button class="back" onclick="go('s-scenes')">‹</button>
-    <div class="pad" style="padding-top:70px"><div class="tag">Step 3 · Unlock</div>
-      <h1 class="serif" style="font-size:27px;margin:8px 0 16px">Generate your pup's flex</h1>
-      <div class="pwprev"><img id="pwImg" src="assets/pet/dog01.jpg"><div><div style="font-weight:700" id="pwScene">Private Jet</div><div style="font-size:13px;color:var(--muted)">Your pet, styled into this scene</div></div></div>
+    <div class="pad" style="padding-top:72px"><div class="tag">Step 3 of 3 · Unlock</div>
+      <h1 class="serif" style="font-size:29px;margin:10px 0 18px">Ready for the spotlight</h1>
+      <div class="pwprev"><img id="pwImg" src="assets/pet/dog01.jpg"><div><div style="font-weight:700;font-size:15px" id="pwScene">Private Jet</div><div style="font-size:13px;color:var(--muted);margin-top:2px">Your pet, styled into this scene</div></div></div>
       <div class="paywall" style="margin:0">
-        <div class="price"><b>$2.99</b><s>$7.99</s><span style="color:var(--gold);font-weight:700;font-size:13px">launch</span></div>
-        <ul><li><b>4 AI photos</b> of your pet</li><li>Full resolution, yours to post</li><li>Mix any scenes you like</li></ul>
-        <button class="btn gold" id="payBtn" onclick="payAndGen(this)">Unlock & Generate — $2.99</button>
-        <small class="legal">Pay first, then we generate. Each pack = 4 photos.</small>
+        <div class="price"><b>$2.99</b><s>$7.99</s><span>Launch price</span></div>
+        <ul><li><b>4 AI portraits</b> of your pet</li><li>Full resolution — yours to post</li><li>Mix &amp; match any scenes</li></ul>
+        <button class="btn gold" id="payBtn" onclick="payAndGen(this)">Unlock &amp; generate · $2.99</button>
+        <small class="legal">Secure checkout, then we generate. One pack = 4 photos.</small>
       </div></div>
   </section>
 
   <section class="screen" id="s-gen"><div class="genwrap">
     <div class="genpreview"><img id="genPrev" src="assets/pet/dog01.jpg"><div class="shimmer"></div></div>
     <h2 class="serif" id="genTitle">Styling your pup…</h2><p id="genMsg">Placing them in the scene</p>
-    <div class="progline"><i id="prog"></i></div><div class="genstrip">🐾 real AI generation · ~20s</div></div>
+    <div class="progline"><i id="prog"></i></div><div class="genstrip">🐾 Real AI generation · about 20s</div></div>
   </section>
 
   <section class="screen" id="s-result"><button class="back" onclick="go('s-scenes')">‹</button>
     <div class="result-img"><img id="resImg" src="assets/pet/dog01.jpg" crossorigin="anonymous"><span class="ailbl">✨ AI-generated</span><span class="wm" id="wmTag">@flexpup</span></div>
-    <label class="wmrow"><input type="checkbox" id="wmToggle" checked onchange="toggleWm()"><span><b>Keep @flexpup watermark</b> — helps friends find it (off = clean image)</span></label>
+    <label class="wmrow"><input type="checkbox" id="wmToggle" checked onchange="toggleWm()"><span><b>Keep the @flexpup mark</b> — helps friends find it. Uncheck for a clean image.</span></label>
     <div class="hint" id="remainTxt"></div>
     <div class="row2"><button class="btn gold" onclick="downloadImg(this)">⬇ Download</button><button class="btn" onclick="shareImg(this)">Share</button></div>
     <div class="row2" style="padding-top:2px"><button class="btn" id="vidBtn" style="background:linear-gradient(100deg,#7b5cff,#4a2fd0);color:#fff" onclick="makeVideo(this)">🎬 Make it a video</button></div>
@@ -160,23 +201,23 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.6;marg
   <section class="screen" id="s-vidgen"><div class="genwrap">
     <div class="genpreview"><img id="vidGenPrev" src="assets/pet/dog01.jpg"><div class="shimmer"></div></div>
     <h2 class="serif" id="vidGenTitle">Animating your pup…</h2><p id="vidGenMsg">Bringing the scene to life</p>
-    <div class="progline"><i id="vidProg"></i></div><div class="genstrip">🎬 real AI video · ~90s</div></div>
+    <div class="progline"><i id="vidProg"></i></div><div class="genstrip">🎬 Real AI video · about 90s</div></div>
   </section>
 
   <section class="screen" id="s-vidresult"><button class="back" onclick="go('s-result')">‹</button>
     <div class="result-img" style="background:#000"><video id="resVid" controls autoplay loop muted playsinline style="width:100%;display:block"></video><span class="ailbl">🎬 AI-generated</span></div>
-    <div class="paywall" style="margin:14px 22px 0"><div style="font-weight:700;margin-bottom:6px">📋 Caption for TikTok / IG</div>
-      <div id="vidCap" style="font-size:14px;color:#4a463f;line-height:1.6;margin-bottom:10px"></div>
-      <button class="btn ghost" style="padding:11px;font-size:14px" onclick="copyCaption(this)">Copy caption + hashtags</button>
-      <small class="legal">Add music in CapCut · post it, tag @flexpup 🐾</small></div>
+    <div class="paywall" style="margin:16px 24px 0"><div style="font-weight:700;margin-bottom:8px">Caption for TikTok &amp; Instagram</div>
+      <div id="vidCap" style="font-size:14px;color:#544e44;line-height:1.6;margin-bottom:12px"></div>
+      <button class="btn ghost" style="padding:12px;font-size:14px" onclick="copyCaption(this)">Copy caption + hashtags</button>
+      <small class="legal">Add music in CapCut, then post and tag @flexpup 🐾</small></div>
     <div class="hint" id="vidRemainTxt"></div>
     <div class="row2"><button class="btn gold" onclick="downloadVid(this)">⬇ Save video</button><button class="btn" onclick="shareVid(this)">Share</button></div>
   </section>
 
   <section class="screen" id="s-share"><button class="back" onclick="go('s-result')">‹</button>
-    <div class="sharewrap"><div class="tag" style="text-align:center;display:block;margin-bottom:12px">Share card</div>
-      <div class="sc"><div class="sc-imgs"><div><span>YOURS</span><img id="scMain" src="assets/pet/dog02.jpg"></div><div><span>ANOTHER</span><img src="assets/pet/dog03.jpg"></div></div>
-        <div class="sc-foot"><div><div class="h">FLEX<b>PUP</b> 🐾</div><div class="ai">✨ AI · make your pet's at flexpup</div></div><div class="qr"></div></div></div>
+    <div class="sharewrap"><div class="tag" style="text-align:center;display:block;margin-bottom:14px">Your share card</div>
+      <div class="sc"><div class="sc-imgs"><div><span>Yours</span><img id="scMain" src="assets/pet/dog02.jpg"></div><div><span>The look</span><img src="assets/pet/dog05.jpg"></div></div>
+        <div class="sc-foot"><div><div class="h">Flex<b>Pup</b> 🐾</div><div class="ai">AI pet studio · make yours at flexpup</div></div><div class="qr"></div></div></div>
       <div class="pad" style="padding:8px 0"><button class="btn gold" onclick="shareImg(this)">Share to TikTok / IG</button>
         <button class="btn ghost" style="margin-top:10px" onclick="go('s-landing')">Start over</button></div></div>
   </section>
@@ -216,7 +257,7 @@ document.getElementById('file').addEventListener('change',function(ev){
   rd.readAsDataURL(f);
 });
 
-function renderScenes(){grid.innerHTML=SCENES.map(s=>`<div class="card" onclick="choose('${s.id}',this)"><img src="${s.img}"><span class="fire">${s.hot}</span><div class="info"><h3>${s.name}</h3></div></div>`).join('');}
+function renderScenes(){grid.innerHTML=SCENES.map(s=>`<div class="card" onclick="choose('${s.id}',this)"><img src="${s.img}"><span class="fire${/🔥/.test(s.hot)?' top':''}">${s.hot}</span><div class="info"><h3>${s.name}</h3></div></div>`).join('');}
 function choose(id,el){picked=SCENES.find(x=>x.id===id);document.querySelectorAll('.card').forEach(c=>c.classList.remove('sel'));el&&el.classList.add('sel');
   document.getElementById('pwImg').src=picked.img;document.getElementById('pwScene').textContent=picked.name;
   if(localStorage.getItem('fp_paidOrder')){runGenerate();} else {go('s-paywall');}
