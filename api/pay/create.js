@@ -63,7 +63,7 @@ module.exports = async function handler(req, res) {
   const ts = new Date().toISOString().replace(/\D/g, '').slice(0, 14);
   const outTradeNo = `SM${ts}${rand}`;
 
-  const hubBody = { method: 'stripe', product, amount, out_ref: outTradeNo, currency: 'usd' };
+  const hubBody = { method: 'stripe', product, amount, out_ref: outTradeNo, currency: 'usd', return_url: 'https://flexpup.vercel.app/' };
   const rawBody = JSON.stringify(hubBody);
   const sign = hubSign(HUB_SECRET, rawBody);
 
