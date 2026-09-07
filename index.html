@@ -138,11 +138,19 @@ small.legal{display:block;font-size:11px;color:var(--muted);line-height:1.7;marg
       <small class="legal">AI-generated · your pet only · $2.99 for a pack of 4.</small></div>
     <div class="gallery">
       <h4>400+ scenes · any pet · new drops weekly</h4>
-      <div class="gstrip">
-        <img src="assets/pet/show_dog19.jpg"><img src="assets/pet/dog05.jpg"><img src="assets/pet/show_dog13.jpg">
-        <img src="assets/pet/dog06.jpg"><img src="assets/pet/show_dog20.jpg"><img src="assets/pet/dog04.jpg">
-        <img src="assets/pet/show_dog09.jpg"><img src="assets/pet/dog07.jpg"><img src="assets/pet/show_dog18.jpg">
-        <img src="assets/pet/dog02.jpg"><img src="assets/pet/show_dog17.jpg"><img src="assets/pet/show_dog03.jpg">
+      <div class="gstrip" id="homeStrip">
+        <img loading="lazy" src="assets/scenes/113.jpg" alt="Hanfu Elegance">
+        <img loading="lazy" src="assets/scenes/101.jpg" alt="Van Gogh">
+        <img loading="lazy" src="assets/scenes/16.jpg" alt="British Aristocrat">
+        <img loading="lazy" src="assets/scenes/39.jpg" alt="Parisian Café">
+        <img loading="lazy" src="assets/scenes/29.jpg" alt="Japanese Kimono">
+        <img loading="lazy" src="assets/scenes/90.jpg" alt="Mermaid Kingdom">
+        <img loading="lazy" src="assets/scenes/71.jpg" alt="Santa">
+        <img loading="lazy" src="assets/scenes/1.jpg" alt="Ghibli Watercolor">
+        <img loading="lazy" src="assets/scenes/2.jpg" alt="Classical Oil">
+        <img loading="lazy" src="assets/scenes/3.jpg" alt="Pixar 3D">
+        <img loading="lazy" src="assets/scenes/12.jpg" alt="Sticker">
+        <img loading="lazy" src="assets/scenes/40.jpg" alt="Mount Fuji">
       </div>
     </div>
     <div class="pad" style="padding-top:4px"><button class="btn gold" onclick="go('s-gate')">Make my pet a star</button></div>
@@ -229,8 +237,17 @@ async function loadScenes(){
   try{
     const r=await fetch('scenes.json',{cache:'no-cache'}); const all=await r.json();
     SCENES=all.filter(s=>s && s.img);           // show only ones that have a thumbnail
-    renderScenes();
+    renderScenes(); renderHomeStrip();
   }catch(e){ console.error('scenes load failed',e); }
+}
+// Homepage showcase — one standout per category (max range + all-pet), refreshes as thumbnails land.
+function renderHomeStrip(){
+  const strip=document.getElementById('homeStrip'); if(!strip||!SCENES.length) return;
+  const order=['Luxury Flex','World Ethnic Styles','Warriors','Fine Art & Abstract','Zodiac & Astrology','Sports','Professions','Art Media & Aesthetics','Royal & Historical','World Landmarks','Movie Genres','World Cultures','Seasonal & Holiday','Fantasy & Dreams','Art Style'];
+  const byc={}; SCENES.forEach(s=>{(byc[s.category]=byc[s.category]||[]).push(s);});
+  const picks=[]; order.forEach(c=>{if(byc[c]&&byc[c].length)picks.push(byc[c][0]);});
+  SCENES.forEach(s=>{if(picks.length<14&&!picks.includes(s))picks.push(s);});
+  strip.innerHTML=picks.slice(0,14).map(s=>`<img loading="lazy" src="${s.img}" alt="${esc(s.name)}">`).join('');
 }
 let picked=null;
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
