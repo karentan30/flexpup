@@ -4300,5 +4300,35 @@
   "prompt": "the pet as a cute die-cut chibi sticker, shy blushing cheeks, bashful sweet look, looking away, bold clean white outline, flat cartoon sticker illustration, solid soft pastel background, big expressive emoji face, adorable",
   "negative": "realistic photo, deformed, extra limbs, human, two heads, multiple pets, text, watermark, low quality",
   "img": ""
+ },
+ {
+  "id": "id_white",
+  "name": "Passport Photo",
+  "category": "ID & Passport",
+  "hot": true,
+  "free": false,
+  "prompt": "the pet as a formal ID passport photo, neutral straight-on headshot, plain solid white background, even studio lighting, sharp, professional document photo",
+  "negative": "deformed, extra limbs, human, two heads, multiple pets, text, watermark, low quality",
+  "img": ""
+ },
+ {
+  "id": "id_blue",
+  "name": "ID Photo (Blue)",
+  "category": "ID & Passport",
+  "hot": true,
+  "free": false,
+  "prompt": "the pet as a formal ID card photo, straight-on headshot, plain solid light-blue background, even lighting, professional passport-style",
+  "negative": "deformed, extra limbs, human, two heads, multiple pets, text, watermark, low quality",
+  "img": ""
+ },
+ {
+  "id": "id_pro",
+  "name": "LinkedIn Headshot",
+  "category": "ID & Passport",
+  "hot": true,
+  "free": false,
+  "prompt": "the pet as a professional corporate headshot wearing a tiny business suit, blurred modern office background, confident, soft professional lighting, LinkedIn profile style",
+  "negative": "deformed, extra limbs, human, two heads, multiple pets, text, watermark, low quality",
+  "img": ""
  }
 ]

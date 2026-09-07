@@ -132,7 +132,7 @@ p.lede{color:var(--muted);font-size:15px;line-height:1.5}
       <div class="poditem"><div class="pi">🧻</div><div class="pn">Sticker Sheet</div><div class="pp">$12</div></div>
       <div class="poditem"><div class="pi">🛏️</div><div class="pn">Blanket</div><div class="pp">$59</div></div>
     </div>
-    <button class="btn gold" style="margin-top:14px" onclick="showErr('Print checkout connects at launch (Printful).')">Order prints →</button>
+    <button class="btn gold" style="margin-top:14px" onclick="orderPrints()">Order prints →</button>
   </div>
 </section>
 
@@ -233,6 +233,7 @@ if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){RE
 function reroll(idx){var o=RESULTS[idx];document.getElementById('cap'+idx).value=pickCaption(o.sc.captionKey);draw(idx);}
 function dl(idx){var cv=document.getElementById('cv'+idx);var a=document.createElement('a');a.download='flexpup-'+RESULTS[idx].sc.id+'.png';a.href=cv.toDataURL('image/png');a.click();}
 function downloadAll(){RESULTS.forEach((_,i)=>setTimeout(()=>dl(i),i*300));}
+function orderPrints(){var u=RESULTS[0]&&RESULTS[0].url;if(!u){showErr('Make a sticker first.');return;}location.href='/pod?img='+encodeURIComponent(u);}
 
 </script>
 <!-- Transparent die-cut stickers: cut the background out in the browser (free, no server). -->

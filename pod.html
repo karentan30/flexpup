@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FlexPup Prints — Order your pet on real products</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1712;--muted:#8a8175;--gold:#c6a15b;--soft:#f3efe7;--line:#e7e0d4;--shadow:0 10px 30px rgba(20,16,11,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:#faf7f1;color:var(--ink);-webkit-font-smoothing:antialiased}
+.serif{font-family:Fraunces,serif}
+.wrap{max-width:520px;margin:0 auto;padding:22px 22px 60px}
+.tag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}
+h1{font-family:Fraunces,serif;font-size:28px;margin:8px 0 4px}
+p.lede{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:16px}
+.preview{width:120px;height:120px;border-radius:16px;object-fit:cover;box-shadow:var(--shadow);margin-bottom:16px}
+.prods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.prod{border:2px solid var(--line);border-radius:14px;background:#fff;padding:14px;cursor:pointer;text-align:center;transition:.15s}
+.prod.sel{border-color:var(--gold);background:#fffdf7}
+.prod .pi{font-size:30px}.prod .pn{font-weight:700;font-size:14px;margin-top:4px}.prod .pp{color:var(--gold);font-weight:700;margin-top:2px}
+.prod .pm{font-size:11px;color:var(--muted);margin-top:2px}
+label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:12px 0 4px}
+input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:15px;background:#fff}
+.row{display:flex;gap:10px}.row>div{flex:1}
+.btn{width:100%;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,#d7b268,#a37a34);color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin-top:18px;font-family:inherit}
+.btn:disabled{opacity:.4}
+.legal{display:block;text-align:center;color:var(--muted);font-size:11px;margin-top:10px}
+.err{background:#fcedec;border:1px solid #edcac7;color:#a3382f;font-size:13px;padding:12px 16px;border-radius:12px;margin-bottom:12px;display:none}
+.ok{background:#eef7f1;border:1px solid #cfe7d8;color:#2f8f5b;font-size:14px;padding:16px;border-radius:12px;text-align:center}
+.section{margin-top:18px}
+h3{font-family:Fraunces,serif;font-size:18px;margin-bottom:6px}
+</style></head>
+<body><div class="wrap">
+<div class="err" id="err"></div>
+<div class="tag">FlexPup Prints · made-to-order</div>
+<h1 class="serif">Put your pet on real stuff</h1>
+<p class="lede">Printed & shipped to you. Pick a product, add your address, done.</p>
+<img class="preview" id="preview" alt="Your design">
+
+<div id="checkout">
+  <div class="section"><h3>Choose a product</h3>
+    <div class="prods" id="prods"></div>
+    <div id="modelWrap" style="display:none"><label>Phone model</label>
+      <select id="model"><option value="iphone-11">iPhone 11</option><option value="iphone-11-pro">iPhone 11 Pro</option><option value="iphone-11-pro-max">iPhone 11 Pro Max</option></select>
+    </div>
+  </div>
+
+  <div class="section"><h3>Ship to</h3>
+    <label>Full name</label><input id="name" autocomplete="name">
+    <label>Address</label><input id="address1" autocomplete="address-line1" placeholder="Street address">
+    <input id="address2" autocomplete="address-line2" placeholder="Apt, suite (optional)" style="margin-top:8px">
+    <div class="row"><div><label>City</label><input id="city" autocomplete="address-level2"></div><div><label>State/Region</label><input id="state_code" autocomplete="address-level1"></div></div>
+    <div class="row"><div><label>Country (2-letter)</label><input id="country_code" autocomplete="country" placeholder="US" maxlength="2" style="text-transform:uppercase"></div><div><label>ZIP / Postal</label><input id="zip" autocomplete="postal-code"></div></div>
+  </div>
+
+  <button class="btn" id="payBtn" onclick="pay()">Continue to payment →</button>
+  <small class="legal">Made-to-order via Printful · ships in ~1 week · AI art of your pet only.</small>
+</div>
+
+<div id="done" style="display:none"><div class="ok" id="okMsg"></div></div>
+</div>
+
+<script>
+var PRODUCTS={}, picked=null, IMG='';
+function showErr(m){var e=document.getElementById('err');e.textContent=m;e.style.display='block';window.scrollTo(0,0);setTimeout(()=>e.style.display='none',6000);}
+var q=new URLSearchParams(location.search);
+IMG=q.get('img')||localStorage.getItem('fp_pod_img')||'';
+if(IMG){localStorage.setItem('fp_pod_img',IMG);document.getElementById('preview').src=IMG.indexOf('/api/image')===0?IMG:('/api/image?url='+encodeURIComponent(IMG));}
+
+fetch('pod_products.json').then(r=>r.json()).then(function(p){PRODUCTS=p;renderProds();});
+function renderProds(){document.getElementById('prods').innerHTML=Object.keys(PRODUCTS).map(function(k){var p=PRODUCTS[k];
+  return `<div class="prod" data-k="${k}" onclick="pickProd('${k}',this)"><div class="pi">${p.emoji}</div><div class="pn">${p.name}</div><div class="pp">$${p.retail}</div></div>`;}).join('');}
+function pickProd(k,el){picked=k;document.querySelectorAll('.prod').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
+  document.getElementById('modelWrap').style.display=PRODUCTS[k].needsModel?'block':'none';}
+
+function collectShipping(){return {name:val('name'),address1:val('address1'),address2:val('address2'),city:val('city'),state_code:val('state_code'),country_code:val('country_code').toUpperCase(),zip:val('zip')};}
+function val(id){return (document.getElementById(id).value||'').trim();}
+
+async function pay(){
+  if(!IMG){showErr('No design found — go back and pick a portrait first.');return;}
+  if(!picked){showErr('Choose a product.');return;}
+  var sh=collectShipping();
+  for(var f of ['name','address1','city','country_code','zip']){if(!sh[f]){showErr('Please fill in your '+f.replace('_code','')+'.');return;}}
+  if(sh.country_code.length!==2){showErr('Country must be a 2-letter code (US, GB, CA…).');return;}
+  // save everything for after the payment redirect
+  localStorage.setItem('fp_pod', JSON.stringify({product:picked,model:val('model'),shipping:sh,img:IMG}));
+  var btn=document.getElementById('payBtn');btn.disabled=true;btn.textContent='Opening checkout…';
+  try{
+    var r=await fetch('/api/pay/create',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({sku:'pod_'+picked,return_url:'https://flexpup.vercel.app/pod?paid=1'})});
+    var j=await r.json();if(!j.url)throw new Error(j.error||'checkout failed');
+    localStorage.setItem('fp_pod_order',j.orderNo);location.href=j.url;
+  }catch(e){btn.disabled=false;btn.textContent='Continue to payment →';showErr('Payment unavailable: '+e.message);}
+}
+
+// after payment: place the Printful order
+(async function(){
+  if(q.get('paid')!=='1')return;
+  var order=localStorage.getItem('fp_pod_order');var saved=localStorage.getItem('fp_pod');
+  if(!order||!saved)return;var d=JSON.parse(saved);
+  document.getElementById('checkout').style.display='none';
+  document.getElementById('done').style.display='block';
+  document.getElementById('okMsg').innerHTML='<div class="spin"></div>Placing your order…';
+  try{
+    var r=await fetch('/api/pod/create',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({product:d.product,model:d.model,imageUrl:d.img,orderNo:order,shipping:d.shipping})});
+    var j=await r.json();
+    if(j.ok){localStorage.removeItem('fp_pod_order');localStorage.removeItem('fp_pod');
+      document.getElementById('okMsg').innerHTML='🎉 <b>Order placed!</b><br>Your pet\'s '+(PRODUCTS[d.product]?PRODUCTS[d.product].name:'print')+' is being made and will ship soon. We\'ll email tracking.';}
+    else{document.getElementById('okMsg').innerHTML='Payment received, but the print order needs a manual check ('+(j.error||'')+'). We\'ll sort it and email you.';}
+  }catch(e){document.getElementById('okMsg').innerHTML='Payment received. We\'ll finalize your print order and email you.';}
+})();
+</script>
+</body></html>
