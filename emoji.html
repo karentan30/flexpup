@@ -116,8 +116,8 @@ p.lede{color:var(--muted);font-size:15px;line-height:1.5}
   <!-- HOW TO ADD -->
   <div class="guide">
     <h3>How to add them to chat 🐾</h3>
-    <div class="g"><b>WhatsApp / Telegram <span class="one">· one-tap</span></b>Tap “Add to WhatsApp”. Packs install straight into your stickers.</div>
-    <div class="g"><b>WeChat 微信 <span class="man">· save & add</span></b>Save the sticker → in a chat, long-press it → “Add to Stickers” (Me → Sticker Gallery → Custom).</div>
+    <div class="g"><b>WhatsApp / Telegram <span class="one">· easiest</span></b>Save the sticker, then add it with a free sticker-maker app (e.g. Sticker.ly) — these apps import straight into WhatsApp/Telegram packs.</div>
+    <div class="g"><b>WeChat 微信 <span class="man">· save & add</span></b>Save the sticker → in a chat, long-press it → “Add to Stickers” (Me → Sticker Gallery → Custom “+”).</div>
     <div class="g"><b>iMessage / LINE <span class="man">· save & add</span></b>Save the PNG, then add it in the app’s sticker/photo tray. (Apple & LINE don’t allow one-tap install.)</div>
   </div>
 
@@ -144,13 +144,29 @@ function esc(t){return String(t).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','
 
 Promise.all([fetch('scenes.json').then(r=>r.json()),fetch('emoji_captions.json').then(r=>r.json())]).then(function(a){
   SCENES=a[0].filter(s=>s.category==='Emoji Stickers'); CAPS=a[1];
-  HOME=a[0].filter(s=>s.img).slice(0,12);
   renderHome(); renderPicker();
+  resumeAfterPay();   // if we just came back from Stripe, restore + auto-generate
 });
-function renderHome(){var s=document.getElementById('homeStrip');if(!HOME.length){s.style.display='none';return;}s.innerHTML=HOME.map(x=>`<img loading="lazy" src="${x.img}" alt="${esc(x.name)}">`).join('');}
+function resumeAfterPay(){
+  var p=new URLSearchParams(location.search);var order=localStorage.getItem('fp_order');
+  if(!(p.get('stripe')==='success'||order))return;
+  fetch('/api/pay/status?order_no='+encodeURIComponent(order||'')).then(r=>r.json()).then(function(j){
+    if(j.status!=='paid')return;
+    localStorage.setItem('fp_paidOrder',order);localStorage.removeItem('fp_order');
+    var pend=localStorage.getItem('fp_emoji_pending');
+    if(pend){try{picked=JSON.parse(pend)||[];}catch(_){picked=[];}}
+    if(picked.length){ go('s-gen'); startGen(); }   // straight into generation, payment already done
+  }).catch(function(){});
+}
+var HOME_SAMPLES=['01_happy','02_lol','03_love','04_cry','05_angry','06_shock','07_sleepy','08_cool'];
+function renderHome(){var s=document.getElementById('homeStrip');s.innerHTML=HOME_SAMPLES.map(n=>`<img loading="lazy" src="assets/emoji-samples/${n}.jpg" alt="sticker sample">`).join('');}
 function renderPicker(){document.getElementById('egrid').innerHTML=SCENES.map(s=>`<div class="echip" data-id="${s.id}" onclick="toggle('${s.id}',this)"><span class="ck">✓</span><span class="em">${s.emojiIcon||'🐾'}</span><span class="nm">${esc(s.name)}</span></div>`).join('');}
-function toggle(id,el){var i=picked.indexOf(id);if(i>=0){picked.splice(i,1);el.classList.remove('sel');}else{picked.push(id);el.classList.add('sel');}
-  document.getElementById('pickCount').textContent=picked.length;document.getElementById('genBtn').disabled=!picked.length;}
+var PACK_SIZE=4; // one pack = 4 stickers (matches GENS_PER_ORDER)
+function toggle(id,el){var i=picked.indexOf(id);
+  if(i>=0){picked.splice(i,1);el.classList.remove('sel');}
+  else{ if(picked.length>=PACK_SIZE){showErr('A pack is '+PACK_SIZE+' stickers — deselect one to swap.');return;} picked.push(id);el.classList.add('sel'); }
+  document.getElementById('pickCount').textContent=picked.length+' of '+PACK_SIZE;
+  document.getElementById('genBtn').disabled=!picked.length;}
 
 // upload
 document.getElementById('file').addEventListener('change',function(ev){var f=ev.target.files[0];if(!f)return;var img=new Image(),rd=new FileReader();
@@ -162,20 +178,24 @@ function pickCaption(key){var c=CAPS[key]||CAPS.mixed||{cn:[],en:[]};var arr=(na
 async function startGen(){
   var pet=localStorage.getItem('fp_pet');if(!pet){showErr('Upload a photo first.');go('s-upload');return;}
   var order=localStorage.getItem('fp_paidOrder');
-  if(!order){ // reuse portrait pay flow
+  if(!order){ // reuse portrait pay flow — dedicated sticker SKU + come back to /emoji
     try{localStorage.setItem('fp_emoji_pending',JSON.stringify(picked));
-      var r=await fetch('/api/pay/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sku:'unlock1'})});
+      var r=await fetch('/api/pay/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sku:'emoji_pack',return_url:'https://flexpup.vercel.app/emoji?stripe=success'})});
       var j=await r.json();if(!j.url)throw new Error(j.error||'checkout failed');localStorage.setItem('fp_order',j.orderNo);window.location.href=j.url;return;
     }catch(e){showErr('Payment unavailable: '+e.message);return;}
   }
-  go('s-gen');var out=[];
-  for(var i=0;i<picked.length;i++){var sc=SCENES.find(x=>x.id===picked[i]);
+  go('s-gen');var out=[],fails=0;
+  for(var i=0;i<picked.length;i++){var sc=SCENES.find(x=>x.id===picked[i]);if(!sc)continue;
     document.getElementById('genMsg').textContent='Sticker '+(i+1)+' of '+picked.length+' · '+sc.name;
     try{var res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scene:sc.id,image:pet,orderNo:order})});
-      var jr=await res.json();if(jr.url){out.push({sc:sc,url:jr.url,cap:pickCaption(sc.captionKey)});}
-    }catch(e){}
+      var jr=await res.json();
+      if(jr && jr.url){out.push({sc:sc,url:jr.url,cap:pickCaption(sc.captionKey)});}
+      else if(jr && (jr.code==='QUOTA'||jr.code==='PAY')){break;}  // pack used up — stop cleanly
+      else{fails++;}
+    }catch(e){fails++;}
   }
   if(!out.length){showErr('Generation failed, please try again.');go('s-pick');return;}
+  if(fails)showErr(out.length+' stickers ready ('+fails+' didn\'t come out — regenerate them free).');
   renderResults(out);go('s-result');
 }
 var RESULTS=[];
@@ -184,23 +204,25 @@ function renderResults(out){RESULTS=out;var box=document.getElementById('results
     d.innerHTML=`<canvas id="cv${idx}" width="600" height="600"></canvas>
       <div class="capbar"><input id="cap${idx}" value="${esc(o.cap)}" oninput="draw(${idx})"><button onclick="reroll(${idx})">↻ another line</button></div>
       <div class="dl-row"><button class="p" onclick="dl(${idx})">⬇ Save</button></div>`;
-    box.appendChild(d);var im=new Image();im.crossOrigin='anonymous';im.onload=()=>{o.img=im;draw(idx);};im.src=o.url;});
+    box.appendChild(d);var im=new Image();im.crossOrigin='anonymous';
+    im.onload=()=>{o.img=im;draw(idx);};
+    im.onerror=()=>{d.querySelector('canvas').insertAdjacentHTML('afterend','<p style="color:var(--muted);font-size:12px">Preview couldn\'t load — tap Save to download.</p>');};
+    im.src='/api/image?url='+encodeURIComponent(o.url);});   // same-origin proxy → canvas not tainted, download works
 }
 function draw(idx){var o=RESULTS[idx];if(!o||!o.img)return;var cv=document.getElementById('cv'+idx),x=cv.getContext('2d');
-  x.clearRect(0,0,600,600);x.drawImage(o.img,0,0,600,600);var cap=document.getElementById('cap'+idx).value;
-  if(cap){x.font='700 40px Inter,sans-serif';x.textAlign='center';x.lineWidth=8;x.strokeStyle='#fff';x.fillStyle='#1a1712';
-    var y=560;x.strokeText(cap,300,y);x.fillText(cap,300,y);}
+  x.clearRect(0,0,600,600);x.drawImage(o.img,0,0,600,600);var cap=document.getElementById('cap'+idx).value.trim();
+  if(!cap)return;
+  // shrink font so long captions fit within 560px
+  var fs=40;x.textAlign='center';x.fillStyle='#1a1712';x.strokeStyle='#fff';x.lineJoin='round';
+  do{ x.font='700 '+fs+'px Inter,sans-serif'; fs-=2; }while(x.measureText(cap).width>560 && fs>18);
+  x.lineWidth=Math.max(5,fs/5);var y=568;
+  x.strokeText(cap,300,y);x.fillText(cap,300,y);
 }
+// redraw all once the webfont is ready so burned-in captions match the UI
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){RESULTS.forEach((_,i)=>draw(i));});}
 function reroll(idx){var o=RESULTS[idx];document.getElementById('cap'+idx).value=pickCaption(o.sc.captionKey);draw(idx);}
 function dl(idx){var cv=document.getElementById('cv'+idx);var a=document.createElement('a');a.download='flexpup-'+RESULTS[idx].sc.id+'.png';a.href=cv.toDataURL('image/png');a.click();}
 function downloadAll(){RESULTS.forEach((_,i)=>setTimeout(()=>dl(i),i*300));}
 
-// resume after payment
-(function(){var p=new URLSearchParams(location.search);var order=localStorage.getItem('fp_order');
-  if(p.get('stripe')==='success'||order){fetch('/api/pay/status?order_no='+encodeURIComponent(order||'')).then(r=>r.json()).then(j=>{
-    if(j.status==='paid'){localStorage.setItem('fp_paidOrder',order);localStorage.removeItem('fp_order');
-      var pend=localStorage.getItem('fp_emoji_pending');if(pend){picked=JSON.parse(pend);} }
-  }).catch(()=>{});}
-})();
 </script>
 </body></html>

@@ -18,7 +18,8 @@ const PROJECT_ID = 'sceneme';
 
 // SKU whitelist — server-authoritative pricing (never trust client amount)
 const SKUS = {
-  unlock1: { amount: 2.99,  product: 'Sceneme — Unlock HD (this scene + 3)' },
+  unlock1:    { amount: 2.99,  product: 'Sceneme — Unlock HD (this scene + 3)' },
+  emoji_pack: { amount: 4.99,  product: 'FlexPup — Pet Sticker Pack (4)' },
   pack20:  { amount: 9.90,  product: 'Sceneme — 20 credits' },
   pack50:  { amount: 19.90, product: 'Sceneme — 50 credits' },
 };
@@ -63,7 +64,12 @@ module.exports = async function handler(req, res) {
   const ts = new Date().toISOString().replace(/\D/g, '').slice(0, 14);
   const outTradeNo = `SM${ts}${rand}`;
 
-  const hubBody = { method: 'stripe', product, amount, out_ref: outTradeNo, currency: 'usd', return_url: 'https://flexpup.vercel.app/' };
+  // return_url: allow the caller to come back to a specific page (e.g. /emoji), whitelisted to our own origin.
+  let backUrl = 'https://flexpup.vercel.app/';
+  if (typeof body.return_url === 'string' && /^https:\/\/flexpup\.vercel\.app\/[\w?=&#/-]*$/.test(body.return_url)) {
+    backUrl = body.return_url;
+  }
+  const hubBody = { method: 'stripe', product, amount, out_ref: outTradeNo, currency: 'usd', return_url: backUrl };
   const rawBody = JSON.stringify(hubBody);
   const sign = hubSign(HUB_SECRET, rawBody);
 
