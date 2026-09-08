@@ -49,7 +49,28 @@
 - flexpup仓库**公开**·密钥只进Vercel env不进代码
 - POD默认草稿(confirm:false)·Karen在Printful后台确认才印
 
+## 四、基建迁移 ✅ 已完成验证(0908) · 只剩Karen释放实例
+- **DNS改了**:mylumee.cn / www / wujing.mylumee.cn 全 → 47.242.80.65(HK)。阿里云控制台UI存不上,**我用阿里云DNS API直接改成功**(key=ALIYUN_REALPERSON_KEY·它有DNS权限;OSS key没有)
+- **浏览器实测通过**:彩镜(mylumee.cn/caijing)+舞镜(wujing.mylumee.cn)都从HK正常加载·SSL证书全签发·flexpup-hub(.app)不受影响
+- **⏳ 只剩**:Karen去阿里云控制台**释放大陆实例 i-0jlezk118hjcdiwq1zdw**(乌兰察布)
+- 💡 **成本真相**:大陆那台=ecs.e-c1m1.large **2核2G乌兰察布·约¥60-120/月**·不是$300。$300大头更可能是OSS/HK服务器/带宽——要砍成本去阿里云费用中心看账单明细
+
+## 五、达人ref追踪 · FlexPup已接中台(0908)
+- 中台Lumee hub本就是**完整增长中台**:`/hub/track`·`/hub/attr/track`·`/hub/referral/attribute`·`/hub/payout/*`·`/hub/account/ensure`·`/hub/auth/google|apple|linkedin`·coupon/pricing/metrics
+- FlexPup已接:`hub-track.js`(抓?ref=+发landing/view事件)+`api/track.js`(HMAC签名转发/hub/track)→ 落hub_events(按ref_code)→ 看没看/看多久/转化+自动佣金
+- **复制到其他项目**:每项目要①它在中台的project_id+`HUB_SECRET_<项目>` ②同两文件(track.js改pid + hub-track.js原样)。Lumee/舞镜(Lumee自己serve)可内部记更省
+- **不用付费**:不用PostHog·不用Papermark($90/月没必要)·中台免费
+
+## 六、6支Demo Shot-List(给Creator)· 已10分
+- 在营销库 `_gtm/★各产品Demo-ShotList-给Creator-0907.md`(FlexPup/彩镜/舞镜/善缘/Slim/Lumee)
+- workflow产→审→改loop到10·每支aha-first+分镜表+文案。**Karen明天手机录**(Chrome抓H5会裁切+水印·必须真机)
+
+## 🔴 钱/密钥提醒(0908)
+- Stripe:FlexPup不需要自己的Stripe key(走hub)。Karen贴过一个`rk_live_...5uRa`(LIVE不是test·已暴露)→ 去Stripe roll/删掉
+- 别把key贴聊天/进公开仓库
+
 ## 下一步
-- 完成HK迁移(彩镜+YiYi)→改DNS→关阿里云
-- FlexPup:面相报告(视觉版)· POD前端接主app肖像结果页 · 缩略图补齐scenes.json同步
-- 增长中台:走路A扩Lumee hub(先设计后建)
+- Karen释放大陆阿里云实例(省钱)
+- 达人ref追踪复制到其他5项目(要各自hub project_id+secret)
+- FlexPup:面相报告(视觉版·ai-pet现成的)· POD前端接主app肖像结果页 · 缩略图补齐scenes.json
+- Demo视频:Karen手机录6支→发我挑穿帮→发creator
