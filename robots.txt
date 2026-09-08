@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://flexpup.vercel.app/sitemap.xml
